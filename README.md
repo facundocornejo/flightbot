@@ -74,6 +74,31 @@ One of the most interesting parts of this project was reverse-engineering airlin
 
 For full technical details, see [docs/api-investigation.md](docs/api-investigation.md).
 
+## Current Configuration
+
+**Active routes (as of Feb 2026):**
+
+| Origin | Destination | Threshold | Trip Type |
+|--------|-------------|-----------|-----------|
+| Buenos Aires (EZE) | Rio de Janeiro (GIG) | < USD 350 | Round-trip 7-10 days |
+| Buenos Aires (EZE) | Maceio (MCZ) | < USD 400 | Round-trip 7-10 days |
+| Buenos Aires (EZE) | Salvador de Bahia (SSA) | < USD 400 | Round-trip 7-10 days |
+| Buenos Aires (EZE) | Natal (NAT) | < USD 400 | Round-trip 7-10 days |
+| Buenos Aires (EZE) | Fortaleza (FOR) | < USD 400 | Round-trip 7-10 days |
+| Buenos Aires (EZE) | Recife (REC) | < USD 400 | Round-trip 7-10 days |
+| Rosario (ROS) | Rio de Janeiro (GIG) | < USD 350 | Round-trip 7-10 days |
+| Rosario (ROS) | Maceio (MCZ) | < USD 400 | Round-trip 7-10 days |
+| Rosario (ROS) | Salvador de Bahia (SSA) | < USD 400 | Round-trip 7-10 days |
+| Rosario (ROS) | Natal (NAT) | < USD 400 | Round-trip 7-10 days |
+| Rosario (ROS) | Fortaleza (FOR) | < USD 400 | Round-trip 7-10 days |
+| Rosario (ROS) | Recife (REC) | < USD 400 | Round-trip 7-10 days |
+
+**Search parameters:**
+- Period: Next 2 months (March-April 2026)
+- Source: Google Flights
+- Frequency: Every 6 hours
+- Alert cooldown: 48 hours (no duplicate alerts)
+
 ## Route Coverage
 
 | Route | Level | Sky | Google Flights |
@@ -83,6 +108,7 @@ For full technical details, see [docs/api-investigation.md](docs/api-investigati
 | EZE → REC (Recife) | — | — | ✅ |
 | EZE → GIG (Rio de Janeiro) | — | — | ✅ |
 | EZE → SSA (Salvador) | — | ✅ | ✅ |
+| ROS → Brazil destinations | — | — | ✅ |
 
 ## Setup Your Own Instance
 
