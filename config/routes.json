@@ -19,7 +19,7 @@
       "trip_type": "round_trip"
     },
     {
-      "_comment": "Buenos Aires → Salvador de Bahia (cerca de Maceió)",
+      "_comment": "Buenos Aires → Salvador de Bahia",
       "origin": "EZE",
       "destination": "SSA",
       "sources": ["google_flights"],
@@ -48,6 +48,60 @@
     {
       "_comment": "Buenos Aires → Recife",
       "origin": "EZE",
+      "destination": "REC",
+      "sources": ["google_flights"],
+      "threshold_usd": 400,
+      "months_ahead": 2,
+      "trip_type": "round_trip"
+    },
+    {
+      "_comment": "Rosario → Rio de Janeiro",
+      "origin": "ROS",
+      "destination": "GIG",
+      "sources": ["google_flights"],
+      "threshold_usd": 350,
+      "months_ahead": 2,
+      "trip_type": "round_trip"
+    },
+    {
+      "_comment": "Rosario → Maceió",
+      "origin": "ROS",
+      "destination": "MCZ",
+      "sources": ["google_flights"],
+      "threshold_usd": 400,
+      "months_ahead": 2,
+      "trip_type": "round_trip"
+    },
+    {
+      "_comment": "Rosario → Salvador de Bahia",
+      "origin": "ROS",
+      "destination": "SSA",
+      "sources": ["google_flights"],
+      "threshold_usd": 400,
+      "months_ahead": 2,
+      "trip_type": "round_trip"
+    },
+    {
+      "_comment": "Rosario → Natal",
+      "origin": "ROS",
+      "destination": "NAT",
+      "sources": ["google_flights"],
+      "threshold_usd": 400,
+      "months_ahead": 2,
+      "trip_type": "round_trip"
+    },
+    {
+      "_comment": "Rosario → Fortaleza",
+      "origin": "ROS",
+      "destination": "FOR",
+      "sources": ["google_flights"],
+      "threshold_usd": 400,
+      "months_ahead": 2,
+      "trip_type": "round_trip"
+    },
+    {
+      "_comment": "Rosario → Recife",
+      "origin": "ROS",
       "destination": "REC",
       "sources": ["google_flights"],
       "threshold_usd": 400,
