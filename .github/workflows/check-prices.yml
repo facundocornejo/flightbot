@@ -1,0 +1,56 @@
+name: Check Flight Prices
+
+on:
+  schedule:
+    # Cada 6 horas: 00:00, 06:00, 12:00, 18:00 UTC
+    # (en Argentina UTC-3: 21:00, 03:00, 09:00, 15:00)
+    - cron: '0 */6 * * *'
+
+  # Permite ejecutar manualmente desde la pestaña Actions en GitHub
+  workflow_dispatch:
+
+jobs:
+  check-prices:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10  # Protección: si algo se cuelga, corta después de 10 min
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: pip-
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Restaurar estado de alertas previas para evitar duplicados
+      - name: Restore alert state
+        uses: actions/cache@v4
+        with:
+          path: data/alert_state.json
+          key: alert-state
+          restore-keys: alert-state
+
+      - name: Run price checker
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python -m src.main
+
+      # Guardar estado actualizado para la próxima ejecución
+      - name: Save alert state
+        uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: data/alert_state.json
+          key: alert-state-${{ github.run_id }}

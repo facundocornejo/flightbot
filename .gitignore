@@ -1,0 +1,12 @@
+venv/
+__pycache__/
+*.pyc
+.env
+data/alert_state.json
+data/price_history.json
+.ruff_cache/
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+.claude/

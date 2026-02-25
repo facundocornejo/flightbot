@@ -1,0 +1,68 @@
+{
+  "routes": [
+    {
+      "_comment": "Buenos Aires → Rio de Janeiro",
+      "origin": "EZE",
+      "destination": "GIG",
+      "sources": ["google_flights"],
+      "threshold_usd": 350,
+      "months_ahead": 2,
+      "trip_type": "round_trip"
+    },
+    {
+      "_comment": "Buenos Aires → Maceió",
+      "origin": "EZE",
+      "destination": "MCZ",
+      "sources": ["google_flights"],
+      "threshold_usd": 400,
+      "months_ahead": 2,
+      "trip_type": "round_trip"
+    },
+    {
+      "_comment": "Buenos Aires → Salvador de Bahia (cerca de Maceió)",
+      "origin": "EZE",
+      "destination": "SSA",
+      "sources": ["google_flights"],
+      "threshold_usd": 400,
+      "months_ahead": 2,
+      "trip_type": "round_trip"
+    },
+    {
+      "_comment": "Buenos Aires → Natal",
+      "origin": "EZE",
+      "destination": "NAT",
+      "sources": ["google_flights"],
+      "threshold_usd": 400,
+      "months_ahead": 2,
+      "trip_type": "round_trip"
+    },
+    {
+      "_comment": "Buenos Aires → Fortaleza",
+      "origin": "EZE",
+      "destination": "FOR",
+      "sources": ["google_flights"],
+      "threshold_usd": 400,
+      "months_ahead": 2,
+      "trip_type": "round_trip"
+    },
+    {
+      "_comment": "Buenos Aires → Recife",
+      "origin": "EZE",
+      "destination": "REC",
+      "sources": ["google_flights"],
+      "threshold_usd": 400,
+      "months_ahead": 2,
+      "trip_type": "round_trip"
+    }
+  ],
+  "settings": {
+    "delay_between_requests_seconds": 2,
+    "alert_cooldown_hours": 48,
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "manual_usd_to_ars": 1400.0,
+
+    "_comment_trip": "Duración del viaje en días (mínimo y máximo)",
+    "trip_duration_min_days": 7,
+    "trip_duration_max_days": 10
+  }
+}
