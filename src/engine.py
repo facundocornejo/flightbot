@@ -5,7 +5,11 @@ filtra por umbrales, verifica duplicados, y envía alertas.
 Es el "cerebro" del bot.
 """
 
+import asyncio
 import logging
+
+# Límite de rutas procesadas en paralelo (evita rate-limiting de Google)
+MAX_CONCURRENT_ROUTES = 2
 
 from src.adapters import GoogleFlightsAdapter, LevelAdapter, SkyAdapter
 from src.adapters.base import BaseAdapter
@@ -52,33 +56,43 @@ async def run(
         "google_flights": GoogleFlightsAdapter(settings),
     }
 
-    # === Paso 1: Recolectar precios de todas las fuentes ===
+    # === Paso 1: Recolectar precios de todas las fuentes (en paralelo con límite) ===
     all_results: list[PriceResult] = []
+    semaphore = asyncio.Semaphore(MAX_CONCURRENT_ROUTES)
 
-    for route in routes:
-        logger.info(
-            "━━━ Procesando ruta: %s → %s (fuentes: %s) ━━━",
-            route.origin, route.destination, ", ".join(route.sources),
-        )
+    async def process_route(route: RouteConfig) -> list[PriceResult]:
+        """Procesa una ruta con todas sus fuentes, respetando el semáforo."""
+        async with semaphore:
+            route_results: list[PriceResult] = []
+            logger.info(
+                "━━━ Procesando ruta: %s → %s (fuentes: %s) ━━━",
+                route.origin, route.destination, ", ".join(route.sources),
+            )
 
-        for source_name in route.sources:
-            adapter = adapters.get(source_name)
-            if adapter is None:
-                logger.warning("Adapter '%s' no encontrado, salteando.", source_name)
-                continue
+            for source_name in route.sources:
+                adapter = adapters.get(source_name)
+                if adapter is None:
+                    logger.warning("Adapter '%s' no encontrado, salteando.", source_name)
+                    continue
 
-            try:
-                results = await adapter.fetch_prices(route)
-                all_results.extend(results)
-                logger.info(
-                    "%s: %d precios obtenidos para %s→%s",
-                    source_name, len(results), route.origin, route.destination,
-                )
-            except Exception as e:
-                logger.error(
-                    "%s: error fatal al consultar %s→%s: %s",
-                    source_name, route.origin, route.destination, e,
-                )
+                try:
+                    results = await adapter.fetch_prices(route)
+                    route_results.extend(results)
+                    logger.info(
+                        "%s: %d precios obtenidos para %s→%s",
+                        source_name, len(results), route.origin, route.destination,
+                    )
+                except Exception as e:
+                    logger.error(
+                        "%s: error fatal al consultar %s→%s: %s",
+                        source_name, route.origin, route.destination, e,
+                    )
+            return route_results
+
+    # Ejecutar todas las rutas en paralelo (máximo MAX_CONCURRENT_ROUTES a la vez)
+    route_results_list = await asyncio.gather(*[process_route(r) for r in routes])
+    for route_results in route_results_list:
+        all_results.extend(route_results)
 
     logger.info("Total de precios recolectados: %d", len(all_results))
 

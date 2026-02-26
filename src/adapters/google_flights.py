@@ -18,8 +18,11 @@ from src.models import AppSettings, PriceResult, RouteConfig
 
 logger = logging.getLogger(__name__)
 
-# Escanear 1 fecha por semana para no hacer demasiados requests
-DAYS_BETWEEN_SCANS = 7
+# Escanear cada 5 días (compromiso entre cobertura y velocidad)
+DAYS_BETWEEN_SCANS = 5
+
+# Timeout por request en segundos (evita que se cuelgue indefinidamente)
+REQUEST_TIMEOUT_SECONDS = 30
 
 # Modo de fetch: "common" es el más rápido y funciona en GitHub Actions
 # Si falla consistentemente, cambiar a "fallback" (usa Playwright serverless)
@@ -139,12 +142,12 @@ class GoogleFlightsAdapter(BaseAdapter):
         today = date.today()
         total_days = route.months_ahead * 30
 
-        # Generar fechas a escanear (cada 3 días para marzo, más denso)
+        # Generar fechas a escanear usando el intervalo configurado
         dates_to_scan: list[date] = []
         current = today + timedelta(days=1)  # Empezar desde mañana
         while (current - today).days <= total_days:
             dates_to_scan.append(current)
-            current += timedelta(days=3)  # Cada 3 días para mejor cobertura
+            current += timedelta(days=DAYS_BETWEEN_SCANS)
 
         # Determinar tipo de viaje y duración
         is_round_trip = route.trip_type == "round_trip"
@@ -186,15 +189,25 @@ class GoogleFlightsAdapter(BaseAdapter):
                         ),
                     ]
 
-                # fast-flights es sincrónico, lo ejecutamos en un thread
-                flight_results = await asyncio.to_thread(
-                    get_flights,
-                    flight_data=flight_data,
-                    trip=trip,
-                    seat="economy",
-                    passengers=Passengers(adults=1),
-                    fetch_mode=FETCH_MODE,
-                )
+                # fast-flights es sincrónico, lo ejecutamos en un thread con timeout
+                try:
+                    flight_results = await asyncio.wait_for(
+                        asyncio.to_thread(
+                            get_flights,
+                            flight_data=flight_data,
+                            trip=trip,
+                            seat="economy",
+                            passengers=Passengers(adults=1),
+                            fetch_mode=FETCH_MODE,
+                        ),
+                        timeout=REQUEST_TIMEOUT_SECONDS,
+                    )
+                except asyncio.TimeoutError:
+                    logger.warning(
+                        "Google Flights: timeout (%ds) en %s→%s fecha %s, salteando...",
+                        REQUEST_TIMEOUT_SECONDS, route.origin, route.destination, scan_date,
+                    )
+                    continue
 
                 # Parsear cada vuelo encontrado
                 if flight_results and flight_results.flights:

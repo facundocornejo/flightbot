@@ -5,7 +5,7 @@
       "origin": "EZE",
       "destination": "GIG",
       "sources": ["google_flights"],
-      "threshold_usd": 350,
+      "threshold_usd": 300,
       "months_ahead": 2,
       "trip_type": "round_trip"
     },
@@ -14,7 +14,7 @@
       "origin": "EZE",
       "destination": "MCZ",
       "sources": ["google_flights"],
-      "threshold_usd": 400,
+      "threshold_usd": 300,
       "months_ahead": 2,
       "trip_type": "round_trip"
     },
@@ -23,7 +23,7 @@
       "origin": "EZE",
       "destination": "SSA",
       "sources": ["google_flights"],
-      "threshold_usd": 400,
+      "threshold_usd": 300,
       "months_ahead": 2,
       "trip_type": "round_trip"
     },
@@ -32,7 +32,7 @@
       "origin": "EZE",
       "destination": "NAT",
       "sources": ["google_flights"],
-      "threshold_usd": 400,
+      "threshold_usd": 300,
       "months_ahead": 2,
       "trip_type": "round_trip"
     },
@@ -41,7 +41,7 @@
       "origin": "EZE",
       "destination": "FOR",
       "sources": ["google_flights"],
-      "threshold_usd": 400,
+      "threshold_usd": 300,
       "months_ahead": 2,
       "trip_type": "round_trip"
     },
@@ -50,7 +50,7 @@
       "origin": "EZE",
       "destination": "REC",
       "sources": ["google_flights"],
-      "threshold_usd": 400,
+      "threshold_usd": 300,
       "months_ahead": 2,
       "trip_type": "round_trip"
     },
@@ -59,7 +59,7 @@
       "origin": "ROS",
       "destination": "GIG",
       "sources": ["google_flights"],
-      "threshold_usd": 350,
+      "threshold_usd": 300,
       "months_ahead": 2,
       "trip_type": "round_trip"
     },
@@ -68,7 +68,7 @@
       "origin": "ROS",
       "destination": "MCZ",
       "sources": ["google_flights"],
-      "threshold_usd": 400,
+      "threshold_usd": 300,
       "months_ahead": 2,
       "trip_type": "round_trip"
     },
@@ -77,7 +77,7 @@
       "origin": "ROS",
       "destination": "SSA",
       "sources": ["google_flights"],
-      "threshold_usd": 400,
+      "threshold_usd": 300,
       "months_ahead": 2,
       "trip_type": "round_trip"
     },
@@ -86,7 +86,7 @@
       "origin": "ROS",
       "destination": "NAT",
       "sources": ["google_flights"],
-      "threshold_usd": 400,
+      "threshold_usd": 300,
       "months_ahead": 2,
       "trip_type": "round_trip"
     },
@@ -95,7 +95,7 @@
       "origin": "ROS",
       "destination": "FOR",
       "sources": ["google_flights"],
-      "threshold_usd": 400,
+      "threshold_usd": 300,
       "months_ahead": 2,
       "trip_type": "round_trip"
     },
@@ -104,7 +104,7 @@
       "origin": "ROS",
       "destination": "REC",
       "sources": ["google_flights"],
-      "threshold_usd": 400,
+      "threshold_usd": 300,
       "months_ahead": 2,
       "trip_type": "round_trip"
     }
@@ -113,7 +113,7 @@
     "delay_between_requests_seconds": 2,
     "alert_cooldown_hours": 48,
     "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
-    "manual_usd_to_ars": 1400.0,
+    "manual_usd_to_ars": 1450.0,
 
     "_comment_trip": "Duración del viaje en días (mínimo y máximo)",
     "trip_duration_min_days": 7,
