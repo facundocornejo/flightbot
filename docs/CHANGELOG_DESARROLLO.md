@@ -4,6 +4,114 @@ Este documento registra todos los cambios, avances y desarrollos del proyecto pa
 
 ---
 
+## 2026-02-26 - Optimización de Rendimiento y Fix de Bugs
+
+### Problema Inicial
+El workflow de GitHub Actions falló por timeout (excedió 10 minutos). El job fue cancelado automáticamente.
+
+**Causa raíz identificada:**
+- 12 rutas × 20 fechas (cada 3 días) = 240 requests
+- 2 segundos de delay entre requests = 8 min solo de delays
+- Sin timeout individual por request (si Google se colgaba, esperaba infinitamente)
+
+### Cambios Implementados
+
+#### 1. Optimización del Adapter de Google Flights
+**Archivo:** `src/adapters/google_flights.py`
+
+| Cambio | Antes | Después |
+|--------|-------|---------|
+| Intervalo de escaneo | Cada 3 días | Cada 5 días |
+| Timeout por request | Sin límite | 30 segundos |
+| Fechas por ruta | ~20 | ~12 |
+
+```python
+# Nuevas constantes agregadas
+DAYS_BETWEEN_SCANS = 5
+REQUEST_TIMEOUT_SECONDS = 30
+```
+
+El timeout usa `asyncio.wait_for()` - si un request tarda más de 30s, lo salta y continúa.
+
+#### 2. Paralelismo en el Engine
+**Archivo:** `src/engine.py`
+
+- Agregado `asyncio.Semaphore(2)` para procesar 2 rutas en paralelo
+- Reduce tiempo total de ejecución ~50%
+- Límite de 2 evita rate-limiting de Google
+
+#### 3. Timeout del Workflow
+**Archivo:** `.github/workflows/check-prices.yml`
+
+| Antes | Después |
+|-------|---------|
+| 10 minutos | 20 minutos |
+
+#### 4. Configuración de Umbrales y Tipo de Cambio
+**Archivo:** `config/routes.json`
+
+| Parámetro | Antes | Después |
+|-----------|-------|---------|
+| `threshold_usd` (todas las rutas) | 350-400 | **300** |
+| `manual_usd_to_ars` | 1400 | **1450** |
+
+**Nota:** Ahora solo se alertan vuelos menores a USD 300.
+
+#### 5. Fix de Bug: Precios $0
+**Archivo:** `src/checker.py`
+
+**Problema:** Cuando Google Flights no devolvía precio, el parser retornaba 0, lo cual pasaba el filtro de umbral (`0 <= 300` = true).
+
+**Solución:** Agregada validación al inicio de `_is_below_threshold()`:
+```python
+if price <= 0:
+    logger.debug("precio inválido, ignorando")
+    return False
+```
+
+### Resultados Post-Optimización
+
+| Métrica | Antes | Después |
+|---------|-------|---------|
+| Tiempo de ejecución | >10 min (timeout) | ~7 min |
+| Requests por ruta | ~20 | ~12 |
+| Alertas con precio $0 | Sí (bug) | No (corregido) |
+| Rutas en paralelo | 1 | 2 |
+
+### Commits Realizados
+1. `4ba24c4` - Optimizar rendimiento y ajustar umbrales de alerta
+2. `93bd79f` - Ignorar precios $0 (errores de parsing de Google Flights)
+
+### Decisiones Tomadas
+
+#### Dividir en múltiples workflows: **NO**
+Se evaluó dividir en 2 workflows (Rio vs Norte de Brasil) pero se decidió mantener unificado porque:
+- 7 minutos está muy lejos del límite de 20 min
+- Complejidad innecesaria para 12 rutas
+- Menos archivos que mantener
+- Sin riesgo de conflictos en el estado de alertas
+
+**Cuándo reconsiderar:** Si se agregan 30+ rutas o se necesitan frecuencias muy distintas por región.
+
+### Frecuencia de Ejecución
+El workflow corre **4 veces por día** (cada 6 horas):
+
+| UTC | Argentina |
+|-----|-----------|
+| 00:00 | 21:00 |
+| 06:00 | 03:00 |
+| 12:00 | 09:00 |
+| 18:00 | 15:00 |
+
+### Estado Actual
+- **GitHub Actions:** Configurado y funcionando
+- **Repositorio:** https://github.com/facundocornejo/flightbot (público)
+- **Próximo run:** Según schedule del cron
+- **Umbral de alerta:** USD 300
+- **Tipo de cambio:** 1450 ARS/USD
+
+---
+
 ## 2026-02-25 - Sesión Inicial: Setup y Primera Búsqueda
 
 ### Resumen
