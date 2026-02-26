@@ -69,13 +69,22 @@ def _is_below_threshold(
     """Check if a price is below the route's threshold.
 
     Lógica de comparación:
-    1. Si el precio es en USD y hay threshold_usd → comparar directo
-    2. Si el precio es en ARS y hay threshold_ars → comparar directo
-    3. Si hay mismatch de moneda → convertir usando tipo de cambio manual
-    4. Si no hay umbral para esa moneda y no se puede convertir → ignorar
+    1. Si el precio es 0 o negativo → ignorar (error de parsing)
+    2. Si el precio es en USD y hay threshold_usd → comparar directo
+    3. Si el precio es en ARS y hay threshold_ars → comparar directo
+    4. Si hay mismatch de moneda → convertir usando tipo de cambio manual
+    5. Si no hay umbral para esa moneda y no se puede convertir → ignorar
     """
     price = result.price
     currency = result.currency
+
+    # Ignorar precios inválidos (errores de parsing de Google Flights)
+    if price <= 0:
+        logger.debug(
+            "⚠️ %s→%s %s: precio inválido (%.0f), ignorando.",
+            result.origin, result.destination, result.date, price,
+        )
+        return False
 
     # Caso 1: Precio en USD, umbral en USD → comparación directa
     if currency == "USD" and route.threshold_usd is not None:
