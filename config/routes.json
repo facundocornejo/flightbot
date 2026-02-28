@@ -1,110 +1,110 @@
 {
   "routes": [
     {
-      "_comment": "Buenos Aires → Rio de Janeiro",
-      "origin": "EZE",
-      "destination": "GIG",
+      "_comment": "Madrid → Nueva York",
+      "origin": "MAD",
+      "destination": "JFK",
+      "sources": ["google_flights"],
+      "threshold_usd": 500,
+      "months_ahead": 2,
+      "trip_type": "round_trip"
+    },
+    {
+      "_comment": "Barcelona → Nueva York",
+      "origin": "BCN",
+      "destination": "JFK",
+      "sources": ["google_flights"],
+      "threshold_usd": 500,
+      "months_ahead": 2,
+      "trip_type": "round_trip"
+    },
+    {
+      "_comment": "Madrid → Pekín",
+      "origin": "MAD",
+      "destination": "PEK",
       "sources": ["google_flights"],
       "threshold_usd": 300,
       "months_ahead": 2,
       "trip_type": "round_trip"
     },
     {
-      "_comment": "Buenos Aires → Maceió",
-      "origin": "EZE",
-      "destination": "MCZ",
+      "_comment": "Barcelona → Pekín",
+      "origin": "BCN",
+      "destination": "PEK",
+      "sources": ["google_flights"],
+      "threshold_usd": 500,
+      "months_ahead": 2,
+      "trip_type": "round_trip"
+    },
+    {
+      "_comment": "Madrid → Hong Kong",
+      "origin": "MAD",
+      "destination": "HKG",
+      "sources": ["google_flights"],
+      "threshold_usd": 500,
+      "months_ahead": 2,
+      "trip_type": "round_trip"
+    },
+    {
+      "_comment": "Barcelona → Hong Kong",
+      "origin": "BCN",
+      "destination": "HKG",
+      "sources": ["google_flights"],
+      "threshold_usd": 500,
+      "months_ahead": 2,
+      "trip_type": "round_trip"
+    },
+    {
+      "_comment": "Madrid → Singapur",
+      "origin": "MAD",
+      "destination": "SIN",
       "sources": ["google_flights"],
       "threshold_usd": 300,
       "months_ahead": 2,
       "trip_type": "round_trip"
     },
     {
-      "_comment": "Buenos Aires → Salvador de Bahia",
-      "origin": "EZE",
-      "destination": "SSA",
+      "_comment": "Barcelona → Singapur",
+      "origin": "BCN",
+      "destination": "SIN",
       "sources": ["google_flights"],
-      "threshold_usd": 300,
+      "threshold_usd": 500,
       "months_ahead": 2,
       "trip_type": "round_trip"
     },
     {
-      "_comment": "Buenos Aires → Natal",
-      "origin": "EZE",
-      "destination": "NAT",
+      "_comment": "Madrid → Filipinas",
+      "origin": "MAD",
+      "destination": "PH",
       "sources": ["google_flights"],
-      "threshold_usd": 300,
+      "threshold_usd": 500,
       "months_ahead": 2,
       "trip_type": "round_trip"
     },
     {
-      "_comment": "Buenos Aires → Fortaleza",
-      "origin": "EZE",
-      "destination": "FOR",
+      "_comment": "Barcelona → Filipinas",
+      "origin": "BCN",
+      "destination": "PH",
       "sources": ["google_flights"],
-      "threshold_usd": 300,
+      "threshold_usd": 500,
       "months_ahead": 2,
       "trip_type": "round_trip"
     },
     {
-      "_comment": "Buenos Aires → Recife",
-      "origin": "EZE",
-      "destination": "REC",
+      "_comment": "Madrid → Islandia",
+      "origin": "MAD",
+      "destination": "IS",
       "sources": ["google_flights"],
-      "threshold_usd": 300,
+      "threshold_usd": 500,
       "months_ahead": 2,
       "trip_type": "round_trip"
     },
     {
-      "_comment": "Rosario → Rio de Janeiro",
-      "origin": "ROS",
-      "destination": "GIG",
+      "_comment": "Barcelona → Islandia",
+      "origin": "BCN",
+      "destination": "IS",
       "sources": ["google_flights"],
-      "threshold_usd": 300,
-      "months_ahead": 2,
-      "trip_type": "round_trip"
-    },
-    {
-      "_comment": "Rosario → Maceió",
-      "origin": "ROS",
-      "destination": "MCZ",
-      "sources": ["google_flights"],
-      "threshold_usd": 300,
-      "months_ahead": 2,
-      "trip_type": "round_trip"
-    },
-    {
-      "_comment": "Rosario → Salvador de Bahia",
-      "origin": "ROS",
-      "destination": "SSA",
-      "sources": ["google_flights"],
-      "threshold_usd": 300,
-      "months_ahead": 2,
-      "trip_type": "round_trip"
-    },
-    {
-      "_comment": "Rosario → Natal",
-      "origin": "ROS",
-      "destination": "NAT",
-      "sources": ["google_flights"],
-      "threshold_usd": 300,
-      "months_ahead": 2,
-      "trip_type": "round_trip"
-    },
-    {
-      "_comment": "Rosario → Fortaleza",
-      "origin": "ROS",
-      "destination": "FOR",
-      "sources": ["google_flights"],
-      "threshold_usd": 300,
-      "months_ahead": 2,
-      "trip_type": "round_trip"
-    },
-    {
-      "_comment": "Rosario → Recife",
-      "origin": "ROS",
-      "destination": "REC",
-      "sources": ["google_flights"],
-      "threshold_usd": 300,
+      "threshold_usd": 500,
       "months_ahead": 2,
       "trip_type": "round_trip"
     }
@@ -116,7 +116,7 @@
     "manual_usd_to_ars": 1450.0,
 
     "_comment_trip": "Duración del viaje en días (mínimo y máximo)",
-    "trip_duration_min_days": 7,
-    "trip_duration_max_days": 10
+    "trip_duration_min_days": 12,
+    "trip_duration_max_days": 20
   }
 }
