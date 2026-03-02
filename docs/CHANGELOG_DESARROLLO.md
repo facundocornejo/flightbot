@@ -4,6 +4,103 @@ Este documento registra todos los cambios, avances y desarrollos del proyecto pa
 
 ---
 
+## 2026-03-02 - Nuevo Workflow para Destinos de Playa (Caribe + Brasil)
+
+### Problema Inicial
+El workflow `check-prices` se canceló por timeout (excedió 20 minutos). Se aumentó a 35 minutos.
+
+### Nuevo Requerimiento
+Búsqueda temporal de destinos de playa con buen clima para finales de marzo / principios de abril:
+- Temporada seca, sin huracanes, bajo riesgo de sargazo
+- Presupuesto máximo: USD 350 ida y vuelta
+- Orígenes: EZE y ROS
+
+### Cambios Implementados
+
+#### 1. Soporte para Config Alternativo
+**Archivo:** `src/main.py`
+
+Nuevo argumento `--config` permite usar archivos de configuración alternativos:
+```bash
+python -m src.main --config config/routes-beach.json
+```
+
+#### 2. Nueva Configuración de Rutas de Playa
+**Archivo:** `config/routes-beach.json`
+
+**22 rutas** (11 destinos × 2 orígenes):
+
+| Región | Destinos | Códigos IATA |
+|--------|----------|--------------|
+| México | Cancún | CUN |
+| Colombia | Cartagena, San Andrés, Santa Marta | CTG, ADZ, SMR |
+| Brasil Nordeste | Fortaleza, Natal, Recife, João Pessoa | FOR, NAT, REC, JPA |
+| Caribe (zona seca) | Aruba, Curaçao, Bonaire | AUA, CUR, BON |
+
+**Configuración:**
+- Threshold: USD 350
+- Viajes: 7-10 días
+- Meses de búsqueda: 2 (cubre hasta ~60 días)
+- Cooldown de alertas: 24h
+
+#### 3. Nuevo Workflow para Playa
+**Archivo:** `.github/workflows/check-beach.yml`
+
+| Parámetro | Valor |
+|-----------|-------|
+| Frecuencia | Cada 12h (00:00 y 12:00 UTC) |
+| Timeout | 90 minutos |
+| Config | `routes-beach.json` |
+| Trigger manual | Sí |
+
+#### 4. Ajuste de Timeout Original
+**Archivo:** `.github/workflows/check-prices.yml`
+
+| Antes | Después |
+|-------|---------|
+| 20 minutos | 35 minutos |
+
+### Estado de Workflows
+
+| Workflow | Config | Rutas | Frecuencia | Horarios (ARG) | Timeout |
+|----------|--------|-------|------------|----------------|---------|
+| **check-prices** | routes.json | 12 | Cada 6h | 21:00, 03:00, 09:00, 15:00 | 35 min |
+| **check-beach** | routes-beach.json | 22 | Cada 12h | 21:00, 09:00 | 90 min |
+
+### Commits Realizados
+1. `ae30ac5` - Aumentar timeout de workflow a 35 minutos
+2. `9c47877` - Agregar búsqueda de destinos de playa (Caribe + Brasil)
+3. `642d7a6` - Hacer check-beach automático cada 12h
+
+### Notas Técnicas
+
+#### Límites de GitHub Actions (repo público)
+- Minutos: Ilimitados
+- Timeout máximo por job: 6 horas (360 min)
+- Sin costo
+
+#### Limitaciones de fast-flights
+La librería `fast-flights` devuelve:
+- Precio
+- Aerolínea
+- Cantidad de escalas
+
+**No devuelve** (no se pueden filtrar):
+- Duración del vuelo
+- Horarios de escalas
+- Aeropuerto de escala
+
+### Comandos Útiles
+```bash
+# Ejecutar búsqueda de playa localmente
+python -m src.main --config config/routes-beach.json --dry-run
+
+# Ejecutar búsqueda original
+python -m src.main --dry-run
+```
+
+---
+
 ## 2026-02-26 - Optimización de Rendimiento y Fix de Bugs
 
 ### Problema Inicial
