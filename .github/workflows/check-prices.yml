@@ -12,7 +12,7 @@ on:
 jobs:
   check-prices:
     runs-on: ubuntu-latest
-    timeout-minutes: 20  # Protección: si algo se cuelga, corta después de 20 min
+    timeout-minutes: 35  # Protección: si algo se cuelga, corta después de 35 min
 
     steps:
       - name: Checkout repository
