@@ -4,8 +4,9 @@ Punto de entrada principal. Carga la configuración, variables de entorno,
 y ejecuta el engine principal.
 
 Uso:
-    python -m src.main              # Modo normal (envía a Telegram)
-    python -m src.main --dry-run    # Modo prueba (imprime en consola)
+    python -m src.main                              # Modo normal (envía a Telegram)
+    python -m src.main --dry-run                    # Modo prueba (imprime en consola)
+    python -m src.main --config config/beach.json   # Usar config alternativo
 """
 
 import argparse
@@ -13,6 +14,7 @@ import asyncio
 import logging
 import os
 import sys
+from pathlib import Path
 
 from dotenv import load_dotenv
 
@@ -28,7 +30,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-async def main(dry_run: bool = False) -> None:
+async def main(dry_run: bool = False, config_path: Path | None = None) -> None:
     """Main execution flow.
 
     Flujo:
@@ -38,10 +40,12 @@ async def main(dry_run: bool = False) -> None:
     """
     logger.info("🛫 Flight Price Alert Bot iniciando...")
     logger.info("Modo: %s", "DRY RUN (sin Telegram)" if dry_run else "PRODUCCIÓN")
+    if config_path:
+        logger.info("Config: %s", config_path)
 
     # === Cargar configuración ===
     try:
-        routes, settings = load_config()
+        routes, settings = load_config(config_path)
     except (FileNotFoundError, ValueError) as e:
         logger.error("Error de configuración: %s", e)
         sys.exit(1)
@@ -91,9 +95,15 @@ if __name__ == "__main__":
         action="store_true",
         help="Modo prueba: imprime alertas en consola sin enviar a Telegram",
     )
+    parser.add_argument(
+        "--config",
+        type=Path,
+        default=None,
+        help="Ruta al archivo de configuración (default: config/routes.json)",
+    )
     args = parser.parse_args()
 
     # DRY_RUN puede venir del CLI o de la variable de entorno
     is_dry_run = args.dry_run or os.getenv("DRY_RUN", "false").lower() == "true"
 
-    asyncio.run(main(dry_run=is_dry_run))
+    asyncio.run(main(dry_run=is_dry_run, config_path=args.config))

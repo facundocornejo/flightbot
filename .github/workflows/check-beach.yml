@@ -1,0 +1,50 @@
+name: Check Beach Destinations
+
+on:
+  # Solo se ejecuta manualmente desde la pestaña Actions en GitHub
+  workflow_dispatch:
+
+jobs:
+  check-beach:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90  # 22 rutas requieren más tiempo
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: pip-
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Estado de alertas separado para búsqueda de playa
+      - name: Restore alert state (beach)
+        uses: actions/cache@v4
+        with:
+          path: data/alert_state.json
+          key: alert-state-beach
+          restore-keys: alert-state-beach
+
+      - name: Run price checker (beach destinations)
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python -m src.main --config config/routes-beach.json
+
+      - name: Save alert state (beach)
+        uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: data/alert_state.json
+          key: alert-state-beach-${{ github.run_id }}
