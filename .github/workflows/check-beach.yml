@@ -12,7 +12,7 @@ on:
 jobs:
   check-beach:
     runs-on: ubuntu-latest
-    timeout-minutes: 90  # 22 rutas requieren más tiempo
+    timeout-minutes: 180  # 22 rutas requieren mucho más tiempo
 
     steps:
       - name: Checkout repository
