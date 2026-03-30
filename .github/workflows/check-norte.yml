@@ -2,8 +2,8 @@ name: Check Norte (NAT/FOR)
 
 on:
   schedule:
-    # Una vez por día a las 08:00 UTC (05:00 Argentina)
-    - cron: '0 8 * * *'
+    # Cada 12h: 00:00 y 12:00 UTC (21:00 y 09:00 Argentina)
+    - cron: '0 0,12 * * *'
 
   workflow_dispatch:
 

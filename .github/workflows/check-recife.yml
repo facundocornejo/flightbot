@@ -2,8 +2,8 @@ name: Check Recife (REC/MCZ)
 
 on:
   schedule:
-    # Una vez por día a las 20:00 UTC (17:00 Argentina)
-    - cron: '0 20 * * *'
+    # Cada 12h: 06:00 y 18:00 UTC (03:00 y 15:00 Argentina)
+    - cron: '0 6,18 * * *'
 
   workflow_dispatch:
 
