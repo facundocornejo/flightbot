@@ -1,18 +1,16 @@
-name: Check Flight Prices
+name: Check Recife (REC/MCZ)
 
 on:
   schedule:
-    # Cada 6 horas: 00:00, 06:00, 12:00, 18:00 UTC
-    # (en Argentina UTC-3: 21:00, 03:00, 09:00, 15:00)
-    - cron: '0 */6 * * *'
+    # Una vez por día a las 20:00 UTC (17:00 Argentina)
+    - cron: '0 20 * * *'
 
-  # Permite ejecutar manualmente desde la pestaña Actions en GitHub
   workflow_dispatch:
 
 jobs:
-  check-prices:
+  check-recife:
     runs-on: ubuntu-latest
-    timeout-minutes: 60  # Protección: si algo se cuelga, corta después de 35 min
+    timeout-minutes: 60
 
     steps:
       - name: Checkout repository
@@ -33,24 +31,22 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      # Restaurar estado de alertas previas para evitar duplicados
-      - name: Restore alert state
+      - name: Restore alert state (recife)
         uses: actions/cache@v4
         with:
           path: data/alert_state.json
-          key: alert-state
-          restore-keys: alert-state
+          key: alert-state-recife
+          restore-keys: alert-state-recife
 
-      - name: Run price checker
+      - name: Run price checker (zona recife)
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python -m src.main
+        run: python -m src.main --config config/routes-recife.json
 
-      # Guardar estado actualizado para la próxima ejecución
-      - name: Save alert state
+      - name: Save alert state (recife)
         uses: actions/cache/save@v4
         if: always()
         with:
           path: data/alert_state.json
-          key: alert-state-${{ github.run_id }}
+          key: alert-state-recife-${{ github.run_id }}

@@ -109,6 +109,7 @@ def _parse_routes(raw_routes: list[dict]) -> list[RouteConfig]:
             threshold_ars=float(threshold_ars) if threshold_ars is not None else None,
             months_ahead=int(r.get("months_ahead", 6)),
             trip_type=r.get("trip_type", "round_trip"),
+            active_months=r.get("active_months", []),
         )
         routes.append(route)
 

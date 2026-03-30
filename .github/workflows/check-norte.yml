@@ -1,18 +1,16 @@
-name: Check Beach Destinations
+name: Check Norte (NAT/FOR)
 
 on:
   schedule:
-    # Cada 12 horas: 00:00 y 12:00 UTC
-    # (en Argentina UTC-3: 21:00 y 09:00)
-    - cron: '0 */12 * * *'
+    # Una vez por día a las 08:00 UTC (05:00 Argentina)
+    - cron: '0 8 * * *'
 
-  # También permite ejecutar manualmente
   workflow_dispatch:
 
 jobs:
-  check-beach:
+  check-norte:
     runs-on: ubuntu-latest
-    timeout-minutes: 180  # 22 rutas requieren mucho más tiempo
+    timeout-minutes: 60
 
     steps:
       - name: Checkout repository
@@ -33,23 +31,22 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      # Estado de alertas separado para búsqueda de playa
-      - name: Restore alert state (beach)
+      - name: Restore alert state (norte)
         uses: actions/cache@v4
         with:
           path: data/alert_state.json
-          key: alert-state-beach
-          restore-keys: alert-state-beach
+          key: alert-state-norte
+          restore-keys: alert-state-norte
 
-      - name: Run price checker (beach destinations)
+      - name: Run price checker (zona norte)
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python -m src.main --config config/routes-beach.json
+        run: python -m src.main --config config/routes-norte.json
 
-      - name: Save alert state (beach)
+      - name: Save alert state (norte)
         uses: actions/cache/save@v4
         if: always()
         with:
           path: data/alert_state.json
-          key: alert-state-beach-${{ github.run_id }}
+          key: alert-state-norte-${{ github.run_id }}

@@ -146,7 +146,9 @@ class GoogleFlightsAdapter(BaseAdapter):
         dates_to_scan: list[date] = []
         current = today + timedelta(days=1)  # Empezar desde mañana
         while (current - today).days <= total_days:
-            dates_to_scan.append(current)
+            # Si hay active_months, solo incluir fechas en esos meses
+            if not route.active_months or current.month in route.active_months:
+                dates_to_scan.append(current)
             current += timedelta(days=DAYS_BETWEEN_SCANS)
 
         # Determinar tipo de viaje y duración

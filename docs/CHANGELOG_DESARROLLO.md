@@ -4,6 +4,30 @@ Este documento registra todos los cambios, avances y desarrollos del proyecto pa
 
 ---
 
+## 2026-03-05 - Aumento de Timeout para Check Beach
+
+### Problema
+El workflow `check-beach` no alcanzaba a completar las 22 rutas dentro del timeout de 90 minutos, cancelándose antes de terminar.
+
+### Cambio Implementado
+**Archivo:** `.github/workflows/check-beach.yml`
+
+| Antes | Después |
+|-------|---------|
+| 90 minutos | 180 minutos (3 horas) |
+
+### Estado de Workflows Actualizado
+
+| Workflow | Config | Rutas | Frecuencia | Timeout |
+|----------|--------|-------|------------|---------|
+| **check-prices** | routes.json | 12 | Cada 6h | 35 min |
+| **check-beach** | routes-beach.json | 22 | Cada 12h | 180 min |
+
+### Commit
+- `2ba3a78` - Aumentar timeout de check-beach a 180 minutos
+
+---
+
 ## 2026-03-02 - Nuevo Workflow para Destinos de Playa (Caribe + Brasil)
 
 ### Problema Inicial
