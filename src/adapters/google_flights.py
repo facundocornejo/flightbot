@@ -19,7 +19,7 @@ from src.models import AppSettings, PriceResult, RouteConfig
 logger = logging.getLogger(__name__)
 
 # Escanear cada 5 días (compromiso entre cobertura y velocidad)
-DAYS_BETWEEN_SCANS = 5
+DAYS_BETWEEN_SCANS = 7
 
 # Timeout por request en segundos (evita que se cuelgue indefinidamente)
 REQUEST_TIMEOUT_SECONDS = 30
