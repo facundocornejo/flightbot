@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flight Price Bot — Dashboard</title>
+  <style>
+    :root {
+      --bg: #0f0f0f;
+      --card: #1a1a2e;
+      --card-alt: #16213e;
+      --accent: #00d4aa;
+      --accent-dim: #00d4aa33;
+      --text: #e0e0e0;
+      --text-dim: #888;
+      --drop: #ff6b6b;
+      --border: #2a2a3e;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    /* Header */
+    header { text-align: center; margin-bottom: 2.5rem; }
+    header h1 { font-size: 1.6rem; font-weight: 600; margin-bottom: 0.3rem; }
+    header h1 span { color: var(--accent); }
+    .meta { color: var(--text-dim); font-size: 0.85rem; }
+    .meta span { margin: 0 0.5rem; }
+
+    /* Stats grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 1.4rem;
+      border: 1px solid var(--border);
+    }
+
+    .stat-card .route {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+      color: var(--accent);
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.3rem 0;
+      font-size: 0.9rem;
+    }
+
+    .stat-row .label { color: var(--text-dim); }
+    .stat-row .value { font-weight: 600; }
+    .stat-row .value.best { color: var(--accent); }
+
+    /* Alerts table */
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .table-wrap { overflow-x: auto; margin-bottom: 2rem; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    th {
+      text-align: left;
+      padding: 0.7rem 0.8rem;
+      color: var(--text-dim);
+      font-weight: 500;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 0.65rem 0.8rem;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    tr:nth-child(even) td { background: var(--card); }
+    tr:nth-child(odd) td { background: var(--card-alt); }
+
+    .price-drop { color: var(--drop); font-weight: 600; }
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .badge-drop { background: #ff6b6b22; color: var(--drop); }
+    .badge-new { background: var(--accent-dim); color: var(--accent); }
+
+    /* Empty state */
+    .empty {
+      text-align: center;
+      padding: 4rem 1rem;
+      color: var(--text-dim);
+    }
+    .empty p { font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .empty small { font-size: 0.85rem; }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-dim);
+      font-size: 0.8rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      body { padding: 1rem 0.5rem; }
+      header h1 { font-size: 1.3rem; }
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Flight Price <span>Bot</span></h1>
+      <div class="meta">
+        <span id="last-updated">Cargando...</span>
+        <span>|</span>
+        <span id="total-alerts"></span>
+      </div>
+    </header>
+
+    <div id="stats-grid" class="stats-grid"></div>
+
+    <div id="alerts-section">
+      <div class="section-title">Alertas recientes</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Ruta</th>
+              <th>Precio</th>
+              <th>Aerol&iacute;nea</th>
+              <th>Fecha vuelo</th>
+              <th>Escalas</th>
+              <th>Fuente</th>
+              <th>Detectado</th>
+            </tr>
+          </thead>
+          <tbody id="alerts-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="empty-state" class="empty" style="display:none">
+      <p>No hay alertas todav&iacute;a</p>
+      <small>El bot env&iacute;a datos cada 6 horas. Las alertas aparecer&aacute;n aqu&iacute; autom&aacute;ticamente.</small>
+    </div>
+
+    <footer>
+      Hecho con Python + GitHub Actions &mdash;
+      <a href="https://github.com/facundocornejo/flightbot" target="_blank">Ver c&oacute;digo fuente</a>
+    </footer>
+  </div>
+
+  <script>
+    const MAX_TABLE_ROWS = 50;
+
+    async function loadData() {
+      try {
+        const res = await fetch('data/alerts.json');
+        if (!res.ok) throw new Error(res.status);
+        return await res.json();
+      } catch {
+        return null;
+      }
+    }
+
+    function formatDate(iso) {
+      if (!iso) return '—';
+      const d = new Date(iso);
+      return d.toLocaleDateString('es-AR', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    function formatDateTime(iso) {
+      if (!iso) return '—';
+      const d = new Date(iso);
+      return d.toLocaleDateString('es-AR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+    }
+
+    function formatPrice(price, currency) {
+      const formatted = price.toLocaleString('es-AR', { maximumFractionDigits: 0 });
+      return `${currency} ${formatted}`;
+    }
+
+    function computeStats(alerts) {
+      const byRoute = {};
+      for (const a of alerts) {
+        const key = `${a.origin} → ${a.destination}`;
+        if (!byRoute[key]) byRoute[key] = [];
+        byRoute[key].push(a);
+      }
+
+      return Object.entries(byRoute).map(([route, items]) => {
+        const prices = items.map(i => i.price);
+        const min = Math.min(...prices);
+        const avg = prices.reduce((s, p) => s + p, 0) / prices.length;
+        const currency = items[0].currency;
+        const drops = items.filter(i => i.is_price_drop).length;
+        return { route, min, avg, count: items.length, currency, drops };
+      }).sort((a, b) => b.count - a.count);
+    }
+
+    function renderStats(stats) {
+      const grid = document.getElementById('stats-grid');
+      grid.innerHTML = stats.map(s => `
+        <div class="stat-card">
+          <div class="route">${s.route}</div>
+          <div class="stat-row">
+            <span class="label">Mejor precio</span>
+            <span class="value best">${formatPrice(s.min, s.currency)}</span>
+          </div>
+          <div class="stat-row">
+            <span class="label">Promedio</span>
+            <span class="value">${formatPrice(s.avg, s.currency)}</span>
+          </div>
+          <div class="stat-row">
+            <span class="label">Alertas</span>
+            <span class="value">${s.count}</span>
+          </div>
+          <div class="stat-row">
+            <span class="label">Bajas detectadas</span>
+            <span class="value">${s.drops}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function stopsText(n) {
+      if (n === 0) return 'Directo';
+      return `${n} escala${n > 1 ? 's' : ''}`;
+    }
+
+    function renderAlerts(alerts) {
+      const sorted = [...alerts].sort((a, b) => (b.fetched_at || '').localeCompare(a.fetched_at || ''));
+      const rows = sorted.slice(0, MAX_TABLE_ROWS);
+
+      const tbody = document.getElementById('alerts-body');
+      tbody.innerHTML = rows.map(a => {
+        const badge = a.is_price_drop
+          ? '<span class="badge badge-drop">Baj&oacute;</span>'
+          : '<span class="badge badge-new">Nueva</span>';
+        return `
+          <tr>
+            <td>${a.origin} → ${a.destination}</td>
+            <td>${badge} ${formatPrice(a.price, a.currency)}</td>
+            <td>${a.airline}</td>
+            <td>${a.date}</td>
+            <td>${stopsText(a.stops)}</td>
+            <td>${a.source}</td>
+            <td>${formatDateTime(a.fetched_at)}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function init() {
+      const data = await loadData();
+
+      if (!data || !data.alerts || data.alerts.length === 0) {
+        document.getElementById('stats-grid').style.display = 'none';
+        document.getElementById('alerts-section').style.display = 'none';
+        document.getElementById('empty-state').style.display = 'block';
+        document.getElementById('last-updated').textContent = 'Sin datos';
+        return;
+      }
+
+      document.getElementById('last-updated').textContent =
+        `Actualizado: ${formatDateTime(data.last_updated)}`;
+      document.getElementById('total-alerts').textContent =
+        `${data.alerts.length} alerta${data.alerts.length !== 1 ? 's' : ''} en los ultimos 90 dias`;
+
+      const stats = computeStats(data.alerts);
+      renderStats(stats);
+      renderAlerts(data.alerts);
+    }
+
+    init();
+  </script>
+</body>
+</html>

@@ -14,6 +14,7 @@ MAX_CONCURRENT_ROUTES = 2
 from src.adapters import GoogleFlightsAdapter, LevelAdapter, SkyAdapter
 from src.adapters.base import BaseAdapter
 from src.checker import check_prices
+from src.history import save_alerts_to_history
 from src.models import AppSettings, PriceResult, RouteConfig
 from src.notifier import print_alert, send_alert, send_error_alert
 from src.state import AlertStateManager
@@ -103,6 +104,7 @@ async def run(
     # === Paso 3: Filtrar duplicados y enviar alertas ===
     sent_count = 0
     skipped_count = 0
+    sent_alerts: list[tuple[PriceResult, bool]] = []
 
     for alert in alerts:
         if not state.should_alert(alert):
@@ -124,6 +126,10 @@ async def run(
 
         # Registrar la alerta como enviada (incluso en dry-run para testing)
         state.record_alert(alert)
+        sent_alerts.append((alert, is_drop))
+
+    # === Paso 3b: Guardar historial para el dashboard ===
+    save_alerts_to_history(sent_alerts)
 
     # === Paso 4: Verificar si Sky tuvo problemas de API key ===
     sky_adapter = adapters.get("sky")
