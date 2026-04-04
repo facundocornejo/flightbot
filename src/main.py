@@ -67,15 +67,27 @@ async def main(dry_run: bool = False, config_path: Path | None = None) -> None:
         )
         sys.exit(1)
 
-    # === Ejecutar el engine ===
+    # === Ejecutar el engine con timeout global ===
+    # Timeout de 50 minutos para auto-terminarse antes del timeout de GitHub Actions
+    global_timeout_seconds = 50 * 60
     try:
-        await run(
-            routes=routes,
-            settings=settings,
-            telegram_token=telegram_token,
-            telegram_chat_id=telegram_chat_id,
-            dry_run=dry_run,
+        await asyncio.wait_for(
+            run(
+                routes=routes,
+                settings=settings,
+                telegram_token=telegram_token,
+                telegram_chat_id=telegram_chat_id,
+                dry_run=dry_run,
+            ),
+            timeout=global_timeout_seconds,
         )
+    except asyncio.TimeoutError:
+        logger.error(
+            "Timeout global alcanzado (%d min). El bot se auto-terminó "
+            "para evitar que GitHub Actions lo mate.",
+            global_timeout_seconds // 60,
+        )
+        sys.exit(1)
     except Exception as e:
         logger.error("Error fatal en el engine: %s", e, exc_info=True)
         sys.exit(1)

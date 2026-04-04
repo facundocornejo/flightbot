@@ -10,7 +10,7 @@ on:
 jobs:
   check-recife:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 65
     permissions:
       contents: write
 
@@ -44,14 +44,14 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python -m src.main --config config/routes-recife.json
+        run: timeout 3600 python -m src.main --config config/routes-recife.json
 
       - name: Commit alert history for dashboard
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/data/alerts.json
+          git add docs/data/alerts.json 2>/dev/null || true
           git diff --staged --quiet || (git commit -m "chore: update alert history [skip ci]" && git pull --rebase origin main && git push)
 
       - name: Save alert state (recife)
