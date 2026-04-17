@@ -2,6 +2,11 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Model usage (Opus 4.6 / Sonnet 4.6 solamente)
+- Default: **Sonnet 4.6** (`claude-sonnet-4-6`) — edits de código, tests, scripts, refactors chicos, ejecutar comandos, lectura/grep de código.
+- Escalar a **Opus 4.6** (`/model claude-opus-4-6`) solo para: planning no-trivial, diseño arquitectónico, debugging no-obvio, decisiones de diseño.
+- **No usar ningún otro modelo** — en particular NO usar Opus 4.7 (`opus`) ni Haiku. Si Claude Code arranca con otro default, cambiar con `/model claude-sonnet-4-6`.
+
 ## Project
 Automated Telegram bot that checks flight prices from multiple sources (Level API, Sky Airline API, Google Flights via fast-flights) and sends alerts when prices drop below configurable thresholds. Runs on GitHub Actions cron (every 6 hours), costs $0.
 
