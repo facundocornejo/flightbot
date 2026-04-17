@@ -4,7 +4,7 @@
       "origin": "EZE",
       "destination": "REC",
       "sources": ["google_flights"],
-      "threshold_usd": 300,
+      "threshold_usd": 420,
       "months_ahead": 9,
       "active_months": [8, 9, 10, 11],
       "trip_type": "round_trip"
@@ -13,7 +13,7 @@
       "origin": "EZE",
       "destination": "MCZ",
       "sources": ["google_flights"],
-      "threshold_usd": 300,
+      "threshold_usd": 420,
       "months_ahead": 9,
       "active_months": [8, 9, 10, 11],
       "trip_type": "round_trip"
@@ -22,7 +22,7 @@
       "origin": "AEP",
       "destination": "REC",
       "sources": ["google_flights"],
-      "threshold_usd": 300,
+      "threshold_usd": 420,
       "months_ahead": 9,
       "active_months": [8, 9, 10, 11],
       "trip_type": "round_trip"
@@ -31,7 +31,7 @@
       "origin": "AEP",
       "destination": "MCZ",
       "sources": ["google_flights"],
-      "threshold_usd": 300,
+      "threshold_usd": 420,
       "months_ahead": 9,
       "active_months": [8, 9, 10, 11],
       "trip_type": "round_trip"
@@ -40,7 +40,7 @@
       "origin": "ROS",
       "destination": "REC",
       "sources": ["google_flights"],
-      "threshold_usd": 370,
+      "threshold_usd": 470,
       "months_ahead": 9,
       "active_months": [8, 9, 10, 11],
       "trip_type": "round_trip"
@@ -49,7 +49,7 @@
       "origin": "ROS",
       "destination": "MCZ",
       "sources": ["google_flights"],
-      "threshold_usd": 370,
+      "threshold_usd": 470,
       "months_ahead": 9,
       "active_months": [8, 9, 10, 11],
       "trip_type": "round_trip"
