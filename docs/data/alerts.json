@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-05-05T08:21:35.836104+00:00",
+  "last_updated": "2026-05-05T13:06:19.402061+00:00",
   "alerts": [
     {
       "source": "google_flights",
@@ -18160,6 +18160,84 @@
       "stops": 0,
       "fetched_at": "2026-05-05T08:20:59.043857+00:00",
       "route_key": "AEP-REC-2026-11-25 → 2026-12-03",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "LATAM",
+      "origin": "EZE",
+      "destination": "FOR",
+      "date": "2026-06-17 → 2026-06-25",
+      "price": 542.0,
+      "currency": "USD",
+      "stops": 1,
+      "fetched_at": "2026-05-05T13:03:33.056694+00:00",
+      "route_key": "EZE-FOR-2026-06-17 → 2026-06-25",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Unknown",
+      "origin": "EZE",
+      "destination": "FOR",
+      "date": "2026-06-24 → 2026-07-02",
+      "price": 492.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-05-05T13:03:36.612590+00:00",
+      "route_key": "EZE-FOR-2026-06-24 → 2026-07-02",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Gol",
+      "origin": "AEP",
+      "destination": "FOR",
+      "date": "2026-06-03 → 2026-06-11",
+      "price": 362.0,
+      "currency": "USD",
+      "stops": 1,
+      "fetched_at": "2026-05-05T13:04:46.267341+00:00",
+      "route_key": "AEP-FOR-2026-06-03 → 2026-06-11",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Unknown",
+      "origin": "AEP",
+      "destination": "FOR",
+      "date": "2026-06-10 → 2026-06-18",
+      "price": 363.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-05-05T13:04:49.767777+00:00",
+      "route_key": "AEP-FOR-2026-06-10 → 2026-06-18",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Gol",
+      "origin": "AEP",
+      "destination": "FOR",
+      "date": "2026-06-17 → 2026-06-25",
+      "price": 363.0,
+      "currency": "USD",
+      "stops": 1,
+      "fetched_at": "2026-05-05T13:04:53.606588+00:00",
+      "route_key": "AEP-FOR-2026-06-17 → 2026-06-25",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Unknown",
+      "origin": "AEP",
+      "destination": "FOR",
+      "date": "2026-06-24 → 2026-07-02",
+      "price": 460.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-05-05T13:04:57.072068+00:00",
+      "route_key": "AEP-FOR-2026-06-24 → 2026-07-02",
       "is_price_drop": false
     }
   ]
