@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-05-07T08:44:20.920065+00:00",
+  "last_updated": "2026-05-07T13:25:46.300556+00:00",
   "alerts": [
     {
       "source": "google_flights",
@@ -19928,6 +19928,123 @@
       "stops": 0,
       "fetched_at": "2026-05-07T08:43:44.407179+00:00",
       "route_key": "AEP-REC-2026-11-27 → 2026-12-05",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Unknown",
+      "origin": "EZE",
+      "destination": "FOR",
+      "date": "2026-06-26 → 2026-07-04",
+      "price": 493.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-05-07T13:23:02.647701+00:00",
+      "route_key": "EZE-FOR-2026-06-26 → 2026-07-04",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Unknown",
+      "origin": "AEP",
+      "destination": "NAT",
+      "date": "2026-08-28 → 2026-09-05",
+      "price": 547.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-05-07T13:24:56.227988+00:00",
+      "route_key": "AEP-NAT-2026-08-28 → 2026-09-05",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Unknown",
+      "origin": "AEP",
+      "destination": "NAT",
+      "date": "2026-09-25 → 2026-10-03",
+      "price": 547.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-05-07T13:25:10.901587+00:00",
+      "route_key": "AEP-NAT-2026-09-25 → 2026-10-03",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "JetSMART",
+      "origin": "AEP",
+      "destination": "NAT",
+      "date": "2026-10-02 → 2026-10-10",
+      "price": 547.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-05-07T13:25:14.733353+00:00",
+      "route_key": "AEP-NAT-2026-10-02 → 2026-10-10",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Unknown",
+      "origin": "AEP",
+      "destination": "NAT",
+      "date": "2026-10-16 → 2026-10-24",
+      "price": 547.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-05-07T13:25:22.103685+00:00",
+      "route_key": "AEP-NAT-2026-10-16 → 2026-10-24",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Unknown",
+      "origin": "AEP",
+      "destination": "NAT",
+      "date": "2026-10-30 → 2026-11-07",
+      "price": 547.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-05-07T13:25:29.247494+00:00",
+      "route_key": "AEP-NAT-2026-10-30 → 2026-11-07",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Gol",
+      "origin": "AEP",
+      "destination": "FOR",
+      "date": "2026-06-05 → 2026-06-13",
+      "price": 457.0,
+      "currency": "USD",
+      "stops": 1,
+      "fetched_at": "2026-05-07T13:24:12.165435+00:00",
+      "route_key": "AEP-FOR-2026-06-05 → 2026-06-13",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Gol",
+      "origin": "AEP",
+      "destination": "FOR",
+      "date": "2026-06-19 → 2026-06-27",
+      "price": 494.0,
+      "currency": "USD",
+      "stops": 1,
+      "fetched_at": "2026-05-07T13:24:19.505504+00:00",
+      "route_key": "AEP-FOR-2026-06-19 → 2026-06-27",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Unknown",
+      "origin": "AEP",
+      "destination": "FOR",
+      "date": "2026-06-26 → 2026-07-04",
+      "price": 497.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-05-07T13:24:23.007030+00:00",
+      "route_key": "AEP-FOR-2026-06-26 → 2026-07-04",
       "is_price_drop": false
     }
   ]
