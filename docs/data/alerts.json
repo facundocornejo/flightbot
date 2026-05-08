@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-05-07T19:50:27.711225+00:00",
+  "last_updated": "2026-05-08T01:48:39.867239+00:00",
   "alerts": [
     {
       "source": "google_flights",
@@ -20357,6 +20357,58 @@
       "stops": 0,
       "fetched_at": "2026-05-07T19:49:49.799019+00:00",
       "route_key": "AEP-REC-2026-11-27 → 2026-12-05",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Unknown",
+      "origin": "EZE",
+      "destination": "FOR",
+      "date": "2026-06-13 → 2026-06-21",
+      "price": 486.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-05-08T01:45:46.915247+00:00",
+      "route_key": "EZE-FOR-2026-06-13 → 2026-06-21",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "LATAM",
+      "origin": "EZE",
+      "destination": "FOR",
+      "date": "2026-06-20 → 2026-06-28",
+      "price": 486.0,
+      "currency": "USD",
+      "stops": 2,
+      "fetched_at": "2026-05-08T01:45:50.730641+00:00",
+      "route_key": "EZE-FOR-2026-06-20 → 2026-06-28",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "LATAM",
+      "origin": "AEP",
+      "destination": "FOR",
+      "date": "2026-06-06 → 2026-06-14",
+      "price": 539.0,
+      "currency": "USD",
+      "stops": 1,
+      "fetched_at": "2026-05-08T01:47:07.229142+00:00",
+      "route_key": "AEP-FOR-2026-06-06 → 2026-06-14",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "LATAM",
+      "origin": "AEP",
+      "destination": "FOR",
+      "date": "2026-06-13 → 2026-06-21",
+      "price": 487.0,
+      "currency": "USD",
+      "stops": 2,
+      "fetched_at": "2026-05-08T01:47:10.853938+00:00",
+      "route_key": "AEP-FOR-2026-06-13 → 2026-06-21",
       "is_price_drop": false
     }
   ]
