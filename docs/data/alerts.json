@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-05-10T19:15:31.119762+00:00",
+  "last_updated": "2026-05-11T01:52:08.613540+00:00",
   "alerts": [
     {
       "source": "google_flights",
@@ -23178,6 +23178,32 @@
       "stops": 0,
       "fetched_at": "2026-05-10T19:14:44.451270+00:00",
       "route_key": "AEP-REC-2026-11-30 → 2026-12-08",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Unknown",
+      "origin": "EZE",
+      "destination": "FOR",
+      "date": "2026-06-23 → 2026-07-01",
+      "price": 452.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-05-11T01:49:28.672176+00:00",
+      "route_key": "EZE-FOR-2026-06-23 → 2026-07-01",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Gol",
+      "origin": "AEP",
+      "destination": "FOR",
+      "date": "2026-06-16 → 2026-06-24",
+      "price": 484.0,
+      "currency": "USD",
+      "stops": 1,
+      "fetched_at": "2026-05-11T01:50:45.747902+00:00",
+      "route_key": "AEP-FOR-2026-06-16 → 2026-06-24",
       "is_price_drop": false
     }
   ]
