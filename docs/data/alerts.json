@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-05-22T09:40:53.285479+00:00",
+  "last_updated": "2026-05-22T14:11:21.071254+00:00",
   "alerts": [
     {
       "source": "google_flights",
@@ -34280,6 +34280,45 @@
       "stops": 0,
       "fetched_at": "2026-05-22T09:40:02.076242+00:00",
       "route_key": "AEP-REC-2026-11-28 → 2026-12-06",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "LATAM",
+      "origin": "AEP",
+      "destination": "NAT",
+      "date": "2026-06-27 → 2026-07-05",
+      "price": 546.0,
+      "currency": "USD",
+      "stops": 1,
+      "fetched_at": "2026-05-22T14:09:57.368260+00:00",
+      "route_key": "AEP-NAT-2026-06-27 → 2026-07-05",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "LATAM",
+      "origin": "AEP",
+      "destination": "FOR",
+      "date": "2026-06-06 → 2026-06-14",
+      "price": 517.0,
+      "currency": "USD",
+      "stops": 2,
+      "fetched_at": "2026-05-22T14:09:47.524831+00:00",
+      "route_key": "AEP-FOR-2026-06-06 → 2026-06-14",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "LATAM",
+      "origin": "AEP",
+      "destination": "FOR",
+      "date": "2026-06-20 → 2026-06-28",
+      "price": 461.0,
+      "currency": "USD",
+      "stops": 2,
+      "fetched_at": "2026-05-22T14:09:55.204940+00:00",
+      "route_key": "AEP-FOR-2026-06-20 → 2026-06-28",
       "is_price_drop": false
     }
   ]
