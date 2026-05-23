@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-05-23T08:28:26.885921+00:00",
+  "last_updated": "2026-05-23T12:55:25.715265+00:00",
   "alerts": [
     {
       "source": "google_flights",
@@ -34982,6 +34982,110 @@
       "stops": 1,
       "fetched_at": "2026-05-23T08:27:33.474573+00:00",
       "route_key": "AEP-REC-2026-11-29 → 2026-12-07",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Unknown",
+      "origin": "AEP",
+      "destination": "NAT",
+      "date": "2026-08-30 → 2026-09-07",
+      "price": 512.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-05-23T12:54:33.693301+00:00",
+      "route_key": "AEP-NAT-2026-08-30 → 2026-09-07",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "JetSMART",
+      "origin": "AEP",
+      "destination": "NAT",
+      "date": "2026-09-06 → 2026-09-14",
+      "price": 512.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-05-23T12:54:37.449314+00:00",
+      "route_key": "AEP-NAT-2026-09-06 → 2026-09-14",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "JetSMART",
+      "origin": "AEP",
+      "destination": "NAT",
+      "date": "2026-09-20 → 2026-09-28",
+      "price": 535.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-05-23T12:54:45.238208+00:00",
+      "route_key": "AEP-NAT-2026-09-20 → 2026-09-28",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Gol",
+      "origin": "AEP",
+      "destination": "NAT",
+      "date": "2026-09-27 → 2026-10-05",
+      "price": 512.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-05-23T12:54:48.962365+00:00",
+      "route_key": "AEP-NAT-2026-09-27 → 2026-10-05",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Unknown",
+      "origin": "AEP",
+      "destination": "NAT",
+      "date": "2026-10-04 → 2026-10-12",
+      "price": 512.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-05-23T12:54:52.508404+00:00",
+      "route_key": "AEP-NAT-2026-10-04 → 2026-10-12",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "JetSMART",
+      "origin": "AEP",
+      "destination": "NAT",
+      "date": "2026-10-11 → 2026-10-19",
+      "price": 520.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-05-23T12:54:56.380133+00:00",
+      "route_key": "AEP-NAT-2026-10-11 → 2026-10-19",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Gol",
+      "origin": "AEP",
+      "destination": "NAT",
+      "date": "2026-10-18 → 2026-10-26",
+      "price": 492.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-05-23T12:55:00.134369+00:00",
+      "route_key": "AEP-NAT-2026-10-18 → 2026-10-26",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "JetSMART",
+      "origin": "AEP",
+      "destination": "NAT",
+      "date": "2026-10-25 → 2026-11-02",
+      "price": 520.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-05-23T12:55:04.114181+00:00",
+      "route_key": "AEP-NAT-2026-10-25 → 2026-11-02",
       "is_price_drop": false
     }
   ]
