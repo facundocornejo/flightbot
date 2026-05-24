@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-05-23T19:21:37.739132+00:00",
+  "last_updated": "2026-05-24T01:57:01.056895+00:00",
   "alerts": [
     {
       "source": "google_flights",
@@ -35411,6 +35411,58 @@
       "stops": 1,
       "fetched_at": "2026-05-23T19:20:43.004756+00:00",
       "route_key": "AEP-REC-2026-11-29 → 2026-12-07",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Unknown",
+      "origin": "AEP",
+      "destination": "NAT",
+      "date": "2026-09-21 → 2026-09-29",
+      "price": 535.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-05-24T01:56:25.317650+00:00",
+      "route_key": "AEP-NAT-2026-09-21 → 2026-09-29",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "JetSMART",
+      "origin": "AEP",
+      "destination": "NAT",
+      "date": "2026-09-28 → 2026-10-06",
+      "price": 535.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-05-24T01:56:29.093892+00:00",
+      "route_key": "AEP-NAT-2026-09-28 → 2026-10-06",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "LATAM",
+      "origin": "AEP",
+      "destination": "FOR",
+      "date": "2026-06-01 → 2026-06-09",
+      "price": 459.0,
+      "currency": "USD",
+      "stops": 2,
+      "fetched_at": "2026-05-24T01:55:29.906077+00:00",
+      "route_key": "AEP-FOR-2026-06-01 → 2026-06-09",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Unknown",
+      "origin": "AEP",
+      "destination": "FOR",
+      "date": "2026-06-22 → 2026-06-30",
+      "price": 459.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-05-24T01:55:40.761372+00:00",
+      "route_key": "AEP-FOR-2026-06-22 → 2026-06-30",
       "is_price_drop": false
     }
   ]
