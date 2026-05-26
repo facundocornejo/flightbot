@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-05-26T10:08:37.542435+00:00",
+  "last_updated": "2026-05-26T14:33:12.185809+00:00",
   "alerts": [
     {
       "source": "google_flights",
@@ -36906,6 +36906,32 @@
       "stops": 0,
       "fetched_at": "2026-05-26T10:07:47.404877+00:00",
       "route_key": "AEP-REC-2026-11-25 → 2026-12-03",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Gol",
+      "origin": "AEP",
+      "destination": "FOR",
+      "date": "2026-06-03 → 2026-06-11",
+      "price": 501.0,
+      "currency": "USD",
+      "stops": 1,
+      "fetched_at": "2026-05-26T14:31:40.607469+00:00",
+      "route_key": "AEP-FOR-2026-06-03 → 2026-06-11",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Unknown",
+      "origin": "AEP",
+      "destination": "FOR",
+      "date": "2026-06-10 → 2026-06-18",
+      "price": 519.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-05-26T14:31:44.149397+00:00",
+      "route_key": "AEP-FOR-2026-06-10 → 2026-06-18",
       "is_price_drop": false
     }
   ]
