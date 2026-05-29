@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-05-29T10:05:11.301041+00:00",
+  "last_updated": "2026-05-29T14:34:42.575932+00:00",
   "alerts": [
     {
       "source": "google_flights",
@@ -39116,6 +39116,19 @@
       "stops": 1,
       "fetched_at": "2026-05-29T10:04:39.548427+00:00",
       "route_key": "ROS-REC-2026-09-05 → 2026-09-13",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Unknown",
+      "origin": "AEP",
+      "destination": "FOR",
+      "date": "2026-06-13 → 2026-06-21",
+      "price": 536.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-05-29T14:33:14.238891+00:00",
+      "route_key": "AEP-FOR-2026-06-13 → 2026-06-21",
       "is_price_drop": false
     }
   ]
