@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-07T19:43:15.868938+00:00",
+  "last_updated": "2026-06-08T11:09:26.633007+00:00",
   "alerts": [
     {
       "source": "google_flights",
@@ -47748,6 +47748,123 @@
       "stops": 0,
       "fetched_at": "2026-06-07T19:42:34.569084+00:00",
       "route_key": "ROS-REC-2026-09-14 → 2026-09-22",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "LATAM",
+      "origin": "EZE",
+      "destination": "REC",
+      "date": "2026-09-15 → 2026-09-23",
+      "price": 518.0,
+      "currency": "USD",
+      "stops": 1,
+      "fetched_at": "2026-06-08T11:07:15.157900+00:00",
+      "route_key": "EZE-REC-2026-09-15 → 2026-09-23",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "LATAM",
+      "origin": "EZE",
+      "destination": "REC",
+      "date": "2026-09-29 → 2026-10-07",
+      "price": 518.0,
+      "currency": "USD",
+      "stops": 2,
+      "fetched_at": "2026-06-08T11:07:23.083010+00:00",
+      "route_key": "EZE-REC-2026-09-29 → 2026-10-07",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "JetSMART",
+      "origin": "AEP",
+      "destination": "REC",
+      "date": "2026-08-04 → 2026-08-12",
+      "price": 442.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-06-08T11:07:40.765567+00:00",
+      "route_key": "AEP-REC-2026-08-04 → 2026-08-12",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Unknown",
+      "origin": "AEP",
+      "destination": "REC",
+      "date": "2026-08-25 → 2026-09-02",
+      "price": 336.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-06-08T11:07:50.911605+00:00",
+      "route_key": "AEP-REC-2026-08-25 → 2026-09-02",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Unknown",
+      "origin": "AEP",
+      "destination": "REC",
+      "date": "2026-09-29 → 2026-10-07",
+      "price": 434.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-06-08T11:08:08.578747+00:00",
+      "route_key": "AEP-REC-2026-09-29 → 2026-10-07",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "JetSMART",
+      "origin": "AEP",
+      "destination": "REC",
+      "date": "2026-10-06 → 2026-10-14",
+      "price": 503.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-06-08T11:08:12.281734+00:00",
+      "route_key": "AEP-REC-2026-10-06 → 2026-10-14",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "JetSMART",
+      "origin": "AEP",
+      "destination": "REC",
+      "date": "2026-10-13 → 2026-10-21",
+      "price": 503.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-06-08T11:08:16.154296+00:00",
+      "route_key": "AEP-REC-2026-10-13 → 2026-10-21",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Unknown",
+      "origin": "AEP",
+      "destination": "REC",
+      "date": "2026-10-20 → 2026-10-28",
+      "price": 519.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-06-08T11:08:19.727277+00:00",
+      "route_key": "AEP-REC-2026-10-20 → 2026-10-28",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "Unknown",
+      "origin": "AEP",
+      "destination": "REC",
+      "date": "2026-10-27 → 2026-11-04",
+      "price": 503.0,
+      "currency": "USD",
+      "stops": 0,
+      "fetched_at": "2026-06-08T11:08:23.202388+00:00",
+      "route_key": "AEP-REC-2026-10-27 → 2026-11-04",
       "is_price_drop": false
     }
   ]
