@@ -5,17 +5,8 @@
       "destination": "REC",
       "sources": ["google_flights"],
       "threshold_usd": 550,
-      "months_ahead": 9,
-      "active_months": [8, 9, 10, 11],
-      "trip_type": "round_trip"
-    },
-    {
-      "origin": "EZE",
-      "destination": "MCZ",
-      "sources": ["google_flights"],
-      "threshold_usd": 550,
-      "months_ahead": 9,
-      "active_months": [8, 9, 10, 11],
+      "depart_from": "2026-08-15",
+      "depart_to": "2026-10-31",
       "trip_type": "round_trip"
     },
     {
@@ -23,35 +14,8 @@
       "destination": "REC",
       "sources": ["google_flights"],
       "threshold_usd": 550,
-      "months_ahead": 9,
-      "active_months": [8, 9, 10, 11],
-      "trip_type": "round_trip"
-    },
-    {
-      "origin": "AEP",
-      "destination": "MCZ",
-      "sources": ["google_flights"],
-      "threshold_usd": 550,
-      "months_ahead": 9,
-      "active_months": [8, 9, 10, 11],
-      "trip_type": "round_trip"
-    },
-    {
-      "origin": "ROS",
-      "destination": "REC",
-      "sources": ["google_flights"],
-      "threshold_usd": 550,
-      "months_ahead": 9,
-      "active_months": [8, 9, 10, 11],
-      "trip_type": "round_trip"
-    },
-    {
-      "origin": "ROS",
-      "destination": "MCZ",
-      "sources": ["google_flights"],
-      "threshold_usd": 550,
-      "months_ahead": 9,
-      "active_months": [8, 9, 10, 11],
+      "depart_from": "2026-08-15",
+      "depart_to": "2026-10-31",
       "trip_type": "round_trip"
     }
   ],
@@ -59,7 +23,7 @@
     "delay_between_requests_seconds": 3,
     "alert_cooldown_hours": 48,
     "manual_usd_to_ars": 1500.0,
-    "trip_duration_min_days": 7,
+    "trip_duration_min_days": 8,
     "trip_duration_max_days": 10
   }
 }

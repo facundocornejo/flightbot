@@ -57,6 +57,11 @@ class RouteConfig:
     months_ahead: int = 6  # Cuántos meses hacia adelante escanear
     trip_type: str = "round_trip"  # "round_trip" o "one_way"
     active_months: list[int] = field(default_factory=list)  # Meses en que esta ruta está activa (1-12), vacío = siempre
+    # Ventana de salida explícita por día (ISO YYYY-MM-DD). Si se definen,
+    # tienen prioridad sobre months_ahead/active_months: se escanea solo
+    # entre depart_from y depart_to. Útil para viajes con fecha acotada.
+    depart_from: str | None = None
+    depart_to: str | None = None
 
 
 @dataclass

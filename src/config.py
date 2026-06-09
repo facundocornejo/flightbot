@@ -110,6 +110,8 @@ def _parse_routes(raw_routes: list[dict]) -> list[RouteConfig]:
             months_ahead=int(r.get("months_ahead", 6)),
             trip_type=r.get("trip_type", "round_trip"),
             active_months=r.get("active_months", []),
+            depart_from=r.get("depart_from"),
+            depart_to=r.get("depart_to"),
         )
         routes.append(route)
 

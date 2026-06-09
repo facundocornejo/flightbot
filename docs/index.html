@@ -78,7 +78,68 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .table-wrap { overflow-x: auto; margin-bottom: 2rem; }
+    /* Controls bar (filtros + orden) */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+      align-items: center;
+    }
+    .control {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .control label {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .controls select,
+    .controls button {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.45rem 0.7rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .controls select:hover,
+    .controls button:hover { border-color: var(--accent); }
+    .controls .dir-btn { align-self: flex-end; min-width: 2.6rem; }
+
+    /* Sortable table headers */
+    th.sortable { cursor: pointer; user-select: none; }
+    th.sortable:hover { color: var(--accent); }
+    th.sortable.active { color: var(--accent); }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.8rem;
+      margin: 1rem 0 2rem;
+      font-size: 0.85rem;
+    }
+    .pagination button {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.45rem 0.9rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .pagination button:hover:not(:disabled) { border-color: var(--accent); }
+    .pagination button:disabled { opacity: 0.35; cursor: not-allowed; }
+    .pagination .page-info { color: var(--text-dim); }
+
+    .table-wrap { overflow-x: auto; margin-bottom: 1rem; }
 
     table {
       width: 100%;
@@ -157,22 +218,61 @@
 
     <div id="alerts-section">
       <div class="section-title">Alertas recientes</div>
+
+      <div class="controls">
+        <div class="control">
+          <label for="filter-route">Ruta</label>
+          <select id="filter-route"><option value="">Todas</option></select>
+        </div>
+        <div class="control">
+          <label for="filter-month">Mes de vuelo</label>
+          <select id="filter-month"><option value="">Todos</option></select>
+        </div>
+        <div class="control">
+          <label for="filter-drops">Mostrar</label>
+          <select id="filter-drops">
+            <option value="all">Todas</option>
+            <option value="drops">Solo bajas de precio</option>
+          </select>
+        </div>
+        <div class="control">
+          <label for="sort-by">Ordenar por</label>
+          <select id="sort-by">
+            <option value="fetched_at">Detectado</option>
+            <option value="price">Precio</option>
+            <option value="flight_date">Fecha vuelo</option>
+            <option value="route">Ruta</option>
+          </select>
+        </div>
+        <button id="sort-dir" class="dir-btn" title="Invertir orden">&darr;</button>
+        <div class="control">
+          <label for="page-size">Por p&aacute;gina</label>
+          <select id="page-size">
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+      </div>
+
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>Ruta</th>
-              <th>Precio</th>
+              <th class="sortable" data-sort="route">Ruta</th>
+              <th class="sortable" data-sort="price">Precio</th>
               <th>Aerol&iacute;nea</th>
-              <th>Fecha vuelo</th>
+              <th class="sortable" data-sort="flight_date">Fecha vuelo</th>
               <th>Escalas</th>
               <th>Fuente</th>
-              <th>Detectado</th>
+              <th class="sortable" data-sort="fetched_at">Detectado</th>
             </tr>
           </thead>
           <tbody id="alerts-body"></tbody>
         </table>
       </div>
+
+      <div id="pagination" class="pagination"></div>
     </div>
 
     <div id="empty-state" class="empty" style="display:none">
@@ -187,7 +287,32 @@
   </div>
 
   <script>
-    const MAX_TABLE_ROWS = 50;
+    // Estado de la vista (filtros, orden, paginación)
+    const state = {
+      alerts: [],
+      filterRoute: '',
+      filterMonth: '',
+      filterDrops: 'all',
+      sortBy: 'fetched_at',
+      sortDir: 'desc',
+      pageSize: 25,
+      page: 1,
+    };
+
+    const MONTH_NAMES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+
+    // Extrae la fecha de salida (primer YYYY-MM-DD) del campo date,
+    // que puede ser "2026-08-15" o "2026-08-15 → 2026-08-23".
+    function departDate(a) {
+      const m = (a.date || '').match(/\d{4}-\d{2}-\d{2}/);
+      return m ? m[0] : '';
+    }
+
+    // Clave de mes "YYYY-MM" a partir de la fecha de salida.
+    function departMonthKey(a) {
+      const d = departDate(a);
+      return d ? d.slice(0, 7) : '';
+    }
 
     async function loadData() {
       try {
@@ -264,10 +389,35 @@
       return `${n} escala${n > 1 ? 's' : ''}`;
     }
 
-    function renderAlerts(alerts) {
-      const sorted = [...alerts].sort((a, b) => (b.fetched_at || '').localeCompare(a.fetched_at || ''));
-      const rows = sorted.slice(0, MAX_TABLE_ROWS);
+    // Aplica los filtros activos sobre el set completo de alertas.
+    function applyFilters(alerts) {
+      return alerts.filter(a => {
+        if (state.filterRoute && `${a.origin} → ${a.destination}` !== state.filterRoute) return false;
+        if (state.filterMonth && departMonthKey(a) !== state.filterMonth) return false;
+        if (state.filterDrops === 'drops' && !a.is_price_drop) return false;
+        return true;
+      });
+    }
 
+    // Ordena según el criterio y dirección actuales.
+    function applySort(alerts) {
+      const dir = state.sortDir === 'asc' ? 1 : -1;
+      const keyFns = {
+        price: a => a.price,
+        flight_date: a => departDate(a),
+        fetched_at: a => a.fetched_at || '',
+        route: a => `${a.origin} → ${a.destination}`,
+      };
+      const keyFn = keyFns[state.sortBy] || keyFns.fetched_at;
+      return [...alerts].sort((a, b) => {
+        const ka = keyFn(a), kb = keyFn(b);
+        if (ka < kb) return -1 * dir;
+        if (ka > kb) return 1 * dir;
+        return 0;
+      });
+    }
+
+    function renderTable(rows) {
       const tbody = document.getElementById('alerts-body');
       tbody.innerHTML = rows.map(a => {
         const badge = a.is_price_drop
@@ -287,6 +437,103 @@
       }).join('');
     }
 
+    function renderPagination(totalRows, totalPages) {
+      const el = document.getElementById('pagination');
+      if (totalRows === 0) { el.innerHTML = ''; return; }
+      const from = (state.page - 1) * state.pageSize + 1;
+      const to = Math.min(state.page * state.pageSize, totalRows);
+      el.innerHTML = `
+        <button id="prev-page" ${state.page <= 1 ? 'disabled' : ''}>&larr; Anterior</button>
+        <span class="page-info">${from}–${to} de ${totalRows} &middot; p&aacute;g. ${state.page}/${totalPages}</span>
+        <button id="next-page" ${state.page >= totalPages ? 'disabled' : ''}>Siguiente &rarr;</button>
+      `;
+      const prev = document.getElementById('prev-page');
+      const next = document.getElementById('next-page');
+      if (prev) prev.onclick = () => { state.page--; render(); };
+      if (next) next.onclick = () => { state.page++; render(); };
+    }
+
+    // Marca el header de columna activo según el orden actual.
+    function syncSortHeaders() {
+      document.querySelectorAll('th.sortable').forEach(th => {
+        th.classList.toggle('active', th.dataset.sort === state.sortBy);
+      });
+    }
+
+    // Render principal: filtra → ordena → pagina → pinta.
+    function render() {
+      const filtered = applyFilters(state.alerts);
+      const sorted = applySort(filtered);
+
+      const totalRows = sorted.length;
+      const totalPages = Math.max(1, Math.ceil(totalRows / state.pageSize));
+      if (state.page > totalPages) state.page = totalPages;
+      if (state.page < 1) state.page = 1;
+
+      const start = (state.page - 1) * state.pageSize;
+      const pageRows = sorted.slice(start, start + state.pageSize);
+
+      renderTable(pageRows);
+      renderPagination(totalRows, totalPages);
+      syncSortHeaders();
+    }
+
+    // Llena los selects de ruta y mes con los valores presentes en los datos.
+    function populateFilters(alerts) {
+      const routeSel = document.getElementById('filter-route');
+      const routes = [...new Set(alerts.map(a => `${a.origin} → ${a.destination}`))].sort();
+      routeSel.innerHTML = '<option value="">Todas</option>' +
+        routes.map(r => `<option value="${r}">${r}</option>`).join('');
+
+      const monthSel = document.getElementById('filter-month');
+      const months = [...new Set(alerts.map(departMonthKey).filter(Boolean))].sort();
+      monthSel.innerHTML = '<option value="">Todos</option>' +
+        months.map(m => {
+          const [y, mo] = m.split('-');
+          return `<option value="${m}">${MONTH_NAMES[parseInt(mo, 10) - 1]} ${y}</option>`;
+        }).join('');
+    }
+
+    // Conecta los controles: cualquier cambio resetea a la página 1 y re-renderiza.
+    function wireControls() {
+      const bind = (id, prop, parse = v => v) => {
+        const el = document.getElementById(id);
+        el.addEventListener('change', () => {
+          state[prop] = parse(el.value);
+          state.page = 1;
+          render();
+        });
+      };
+      bind('filter-route', 'filterRoute');
+      bind('filter-month', 'filterMonth');
+      bind('filter-drops', 'filterDrops');
+      bind('sort-by', 'sortBy');
+      bind('page-size', 'pageSize', v => parseInt(v, 10));
+
+      // Botón de dirección de orden
+      document.getElementById('sort-dir').addEventListener('click', () => {
+        state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
+        document.getElementById('sort-dir').innerHTML = state.sortDir === 'asc' ? '&uarr;' : '&darr;';
+        render();
+      });
+
+      // Click en headers ordenables: cambia criterio o invierte si ya está activo.
+      document.querySelectorAll('th.sortable').forEach(th => {
+        th.addEventListener('click', () => {
+          const col = th.dataset.sort;
+          if (state.sortBy === col) {
+            state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
+          } else {
+            state.sortBy = col;
+            state.sortDir = col === 'price' ? 'asc' : 'desc';
+          }
+          document.getElementById('sort-by').value = state.sortBy;
+          document.getElementById('sort-dir').innerHTML = state.sortDir === 'asc' ? '&uarr;' : '&darr;';
+          render();
+        });
+      });
+    }
+
     async function init() {
       const data = await loadData();
 
@@ -303,9 +550,13 @@
       document.getElementById('total-alerts').textContent =
         `${data.alerts.length} alerta${data.alerts.length !== 1 ? 's' : ''} en los ultimos 90 dias`;
 
+      state.alerts = data.alerts;
+
       const stats = computeStats(data.alerts);
       renderStats(stats);
-      renderAlerts(data.alerts);
+      populateFilters(data.alerts);
+      wireControls();
+      render();
     }
 
     init();

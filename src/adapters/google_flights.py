@@ -244,6 +244,54 @@ class GoogleFlightsAdapter(BaseAdapter):
 
         return data
 
+    @staticmethod
+    def _build_scan_dates(route: RouteConfig, today: date) -> list[date]:
+        """Build the list of departure dates to scan for a route.
+
+        Dos modos:
+        - Ventana explícita: si la ruta tiene depart_from/depart_to, escanea
+          día-por-día (cada DAYS_BETWEEN_SCANS) dentro de ese rango, recortando
+          al futuro (nunca antes de mañana).
+        - Clásico: months_ahead hacia adelante, filtrando por active_months.
+        """
+        dates: list[date] = []
+        start_floor = today + timedelta(days=1)  # Nunca escanear el pasado ni hoy
+
+        # === Modo ventana explícita ===
+        if route.depart_from or route.depart_to:
+            try:
+                win_start = (
+                    date.fromisoformat(route.depart_from)
+                    if route.depart_from
+                    else start_floor
+                )
+                win_end = (
+                    date.fromisoformat(route.depart_to)
+                    if route.depart_to
+                    else win_start + timedelta(days=route.months_ahead * 30)
+                )
+            except ValueError:
+                logger.warning(
+                    "Ventana de fechas inválida en %s→%s (depart_from=%s, depart_to=%s), "
+                    "usando modo clásico.",
+                    route.origin, route.destination, route.depart_from, route.depart_to,
+                )
+            else:
+                current = max(win_start, start_floor)
+                while current <= win_end:
+                    dates.append(current)
+                    current += timedelta(days=DAYS_BETWEEN_SCANS)
+                return dates
+
+        # === Modo clásico: months_ahead + active_months ===
+        total_days = route.months_ahead * 30
+        current = start_floor
+        while (current - today).days <= total_days:
+            if not route.active_months or current.month in route.active_months:
+                dates.append(current)
+            current += timedelta(days=DAYS_BETWEEN_SCANS)
+        return dates
+
     async def fetch_prices(self, route: RouteConfig) -> list[PriceResult]:
         """Fetch prices from Google Flights for specific dates.
 
@@ -264,33 +312,43 @@ class GoogleFlightsAdapter(BaseAdapter):
 
         results: list[PriceResult] = []
         today = date.today()
-        total_days = route.months_ahead * 30
 
-        # Generar fechas a escanear usando el intervalo configurado
-        dates_to_scan: list[date] = []
-        current = today + timedelta(days=1)  # Empezar desde mañana
-        while (current - today).days <= total_days:
-            # Si hay active_months, solo incluir fechas en esos meses
-            if not route.active_months or current.month in route.active_months:
-                dates_to_scan.append(current)
-            current += timedelta(days=DAYS_BETWEEN_SCANS)
+        # Generar fechas a escanear. Si la ruta define una ventana explícita
+        # (depart_from/depart_to), se escanea día-por-día dentro de ese rango.
+        # Si no, se usa el modo clásico: months_ahead + active_months.
+        dates_to_scan: list[date] = self._build_scan_dates(route, today)
 
-        # Determinar tipo de viaje y duración
+        # Determinar tipo de viaje y duraciones a escanear
         is_round_trip = route.trip_type == "round_trip"
 
-        # Usar duración promedio para round-trip
-        return_days = (self.settings.trip_duration_min_days + self.settings.trip_duration_max_days) // 2
+        if is_round_trip:
+            # Escanear cada duración entera en [min, max] días (ej: 8, 9, 10).
+            # Así no nos perdemos un precio bueno por un día más o menos de estadía.
+            durations = list(range(
+                self.settings.trip_duration_min_days,
+                self.settings.trip_duration_max_days + 1,
+            ))
+        else:
+            durations = [0]  # one-way: la duración no aplica
+
+        # Construir lista de consultas (fecha_salida, duración). Cada combinación
+        # es un request independiente a Google Flights.
+        jobs: list[tuple[date, int]] = [
+            (scan_date, dur) for scan_date in dates_to_scan for dur in durations
+        ]
 
         logger.info(
-            "Google Flights: escaneando %s → %s (%d fechas%s)",
+            "Google Flights: escaneando %s → %s (%d fechas × %d duración%s = %d consultas%s)",
             route.origin, route.destination,
-            len(dates_to_scan),
-            f", vuelta +{return_days} días" if is_round_trip else "",
+            len(dates_to_scan), len(durations),
+            "es" if len(durations) != 1 else "",
+            len(jobs),
+            f", vuelta {durations[0]}-{durations[-1]} días" if is_round_trip else "",
         )
 
         self._consecutive_failures = 0
 
-        for scan_date in dates_to_scan:
+        for scan_date, return_days in jobs:
             # Si hay muchos fallos consecutivos, abortar esta ruta
             if self._consecutive_failures >= self._max_consecutive_failures:
                 logger.warning(

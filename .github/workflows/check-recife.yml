@@ -1,4 +1,4 @@
-name: Check Recife (REC/MCZ)
+name: Check Recife (BA→REC)
 
 on:
   schedule:
