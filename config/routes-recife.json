@@ -5,7 +5,7 @@
       "destination": "REC",
       "sources": ["google_flights"],
       "threshold_usd": 550,
-      "depart_from": "2026-08-15",
+      "depart_from": "2026-08-01",
       "depart_to": "2026-10-31",
       "trip_type": "round_trip"
     },
@@ -14,7 +14,7 @@
       "destination": "REC",
       "sources": ["google_flights"],
       "threshold_usd": 550,
-      "depart_from": "2026-08-15",
+      "depart_from": "2026-08-01",
       "depart_to": "2026-10-31",
       "trip_type": "round_trip"
     }
