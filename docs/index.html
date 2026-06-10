@@ -196,10 +196,48 @@
     footer a { color: var(--accent); text-decoration: none; }
     footer a:hover { text-decoration: underline; }
 
-    @media (max-width: 600px) {
-      body { padding: 1rem 0.5rem; }
+    @media (max-width: 640px) {
+      body { padding: 1rem 0.6rem; }
       header h1 { font-size: 1.3rem; }
       .stats-grid { grid-template-columns: 1fr; }
+
+      /* Controles: a ancho completo (2 por fila) y selects full-width */
+      .controls { gap: 0.5rem; }
+      .control { flex: 1 1 calc(50% - 0.5rem); min-width: 0; }
+      .controls select { width: 100%; }
+      .controls .dir-btn { flex: 0 0 auto; align-self: flex-end; }
+
+      /* Tabla -> tarjetas apiladas (cada alerta es una card) */
+      .table-wrap { overflow-x: visible; }
+      table, tbody, tr, td { display: block; width: 100%; }
+      thead { display: none; }
+      tr {
+        margin-bottom: 0.9rem;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      tr:nth-child(even) td,
+      tr:nth-child(odd) td { background: var(--card); }
+      td {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 1rem;
+        text-align: right;
+        white-space: normal;
+        padding: 0.6rem 0.85rem;
+        border-bottom: 1px solid var(--border);
+      }
+      td:last-child { border-bottom: none; }
+      /* La etiqueta de cada campo aparece a la izquierda */
+      td::before {
+        content: attr(data-label);
+        color: var(--text-dim);
+        font-weight: 500;
+        text-align: left;
+        white-space: nowrap;
+      }
     }
   </style>
 </head>
@@ -425,13 +463,13 @@
           : '<span class="badge badge-new">Nueva</span>';
         return `
           <tr>
-            <td>${a.origin} → ${a.destination}</td>
-            <td>${badge} ${formatPrice(a.price, a.currency)}</td>
-            <td>${a.airline}</td>
-            <td>${a.date}</td>
-            <td>${stopsText(a.stops)}</td>
-            <td>${a.source}</td>
-            <td>${formatDateTime(a.fetched_at)}</td>
+            <td data-label="Ruta">${a.origin} → ${a.destination}</td>
+            <td data-label="Precio">${badge} ${formatPrice(a.price, a.currency)}</td>
+            <td data-label="Aerol&iacute;nea">${a.airline}</td>
+            <td data-label="Fecha vuelo">${a.date}</td>
+            <td data-label="Escalas">${stopsText(a.stops)}</td>
+            <td data-label="Fuente">${a.source}</td>
+            <td data-label="Detectado">${formatDateTime(a.fetched_at)}</td>
           </tr>
         `;
       }).join('');
