@@ -2,6 +2,17 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Estado actual (2026-07-09)
+
+- **Bot operativo post-incidente**: estuvo mudo 2026-06-10 → 2026-07-08 (fast-flights 3.0 rompió
+  la API; los runs quedaban en verde con 0 precios). Fix en commit `122da20`: migración a la API
+  v3 con `fast-flights==3.0.2` pineado exacto, precios pedidos en USD directo, y anti-silencio
+  (0 precios → alerta Telegram + exit 2 → run rojo). Verificado en Actions: 534 precios, 8 alertas.
+- **Pendientes** (ver `tasks/todo.md`): decisiones de limpieza (scripts sueltos obsoletos,
+  adapters Level/Sky sin uso), bug esporádico "list index out of range" del parser v3 (vigilar),
+  unificar criterio de pin con el clon de Río (`brasil-rio-` usa `>=3.0.2,<4`, ya arreglado aparte).
+- **Bumps de fast-flights**: siempre a mano y con probe local previa (ver tasks/todo.md).
+
 ## Model usage (Opus 4.6 / Sonnet 4.6 solamente)
 - Default: **Sonnet 4.6** (`claude-sonnet-4-6`) — edits de código, tests, scripts, refactors chicos, ejecutar comandos, lectura/grep de código.
 - Escalar a **Opus 4.6** (`/model claude-opus-4-6`) solo para: planning no-trivial, diseño arquitectónico, debugging no-obvio, decisiones de diseño.
