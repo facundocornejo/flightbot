@@ -71,7 +71,7 @@ async def main(dry_run: bool = False, config_path: Path | None = None) -> None:
     # Timeout de 50 minutos para auto-terminarse antes del timeout de GitHub Actions
     global_timeout_seconds = 50 * 60
     try:
-        await asyncio.wait_for(
+        total_prices = await asyncio.wait_for(
             run(
                 routes=routes,
                 settings=settings,
@@ -92,6 +92,12 @@ async def main(dry_run: bool = False, config_path: Path | None = None) -> None:
         logger.error("Error fatal en el engine: %s", e, exc_info=True)
         sys.exit(1)
 
+    # Corrida vacía = exit code 2 para que GitHub Actions marque el run en rojo.
+    # Antes esto terminaba en "success" y el bot estuvo un mes muerto sin aviso.
+    if total_prices == 0:
+        logger.error("❌ Corrida vacía: 0 precios recolectados. Saliendo con código 2.")
+        sys.exit(2)
+
     logger.info("✅ Flight Price Alert Bot finalizado.")
 
 
@@ -111,7 +117,7 @@ if __name__ == "__main__":
         "--config",
         type=Path,
         default=None,
-        help="Ruta al archivo de configuración (default: config/routes.json)",
+        help="Ruta al archivo de configuración (default: config/routes-recife.json)",
     )
     args = parser.parse_args()
 

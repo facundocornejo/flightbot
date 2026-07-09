@@ -1,5 +1,8 @@
 httpx>=0.27.0
-fast-flights>=2.2
+# Pin exacto: fast-flights 3.0 rompió la API (FlightData→FlightQuery) y el bot
+# quedó mudo un mes instalando la versión nueva con >=. Bumps de esta dependencia
+# se hacen a mano, probando primero con una probe local.
+fast-flights==3.0.2
 python-dotenv>=1.0.0
 ruff>=0.8.0
 pytest>=8.0.0

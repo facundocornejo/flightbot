@@ -1,8 +1,8 @@
 """Google Flights price adapter via fast-flights library.
 
-Usa la librería fast-flights para scrapear Google Flights. Cubre TODAS
-las aerolíneas en cualquier ruta. Funciona decodificando parámetros
-Protobuf de las URLs de Google Flights.
+Usa la librería fast-flights (API v3: FlightQuery + create_query + get_flights)
+para scrapear Google Flights. Cubre TODAS las aerolíneas en cualquier ruta.
+Funciona decodificando parámetros Protobuf de las URLs de Google Flights.
 
 Install: pip install fast-flights
 Docs: https://github.com/AWeirdDev/flights
@@ -11,7 +11,6 @@ Docs: https://github.com/AWeirdDev/flights
 import asyncio
 import logging
 import multiprocessing
-import re
 from datetime import date, timedelta
 
 from src.adapters.base import BaseAdapter
@@ -26,89 +25,27 @@ DAYS_BETWEEN_SCANS = 7
 # Usa multiprocessing para poder matar el proceso de verdad
 REQUEST_TIMEOUT_SECONDS = 45
 
-# Modo de fetch: "common" es el más rápido y funciona en GitHub Actions
-# Si falla consistentemente, cambiar a "fallback" (usa Playwright serverless)
-FETCH_MODE = "common"
+# Moneda solicitada a Google Flights. La API v3 permite pedirla explícita:
+# USD directo evita convertir ARS con un tipo de cambio manual desactualizado
+# (con la v2, manual_usd_to_ars=1500 hacía parecer ~500 USD un vuelo de 601).
+REQUEST_CURRENCY = "USD"
 
 
-def _parse_price(price_str: str | None) -> float | None:
-    """Parse price string from fast-flights to float.
+def _serialize_flights(result: list) -> list[dict]:
+    """Serialize fast-flights v3 results to plain dicts.
 
-    fast-flights devuelve precios como strings tipo "$1,234", "ARS 500,000",
-    "€ 450", etc. Este parser extrae el número.
-
-    Ejemplos:
-        "$1,234" → 1234.0
-        "ARS 500,000" → 500000.0
-        "€450" → 450.0
-        None → None
+    Necesario porque los resultados cruzan la frontera del subproceso por
+    una Queue (solo objetos picklables simples). Los segmentos de `f.flights`
+    corresponden al tramo de ida: N segmentos = N-1 escalas.
     """
-    if not price_str:
-        return None
-
-    # Remover todo excepto dígitos, puntos y comas
-    cleaned = re.sub(r"[^\d.,]", "", str(price_str))
-
-    if not cleaned:
-        return None
-
-    # Manejar formato con coma como separador de miles (1,234 o 500,000)
-    # y punto como separador decimal (1,234.56)
-    if "," in cleaned and "." in cleaned:
-        # Tiene ambos: 1,234.56 → quitar comas
-        cleaned = cleaned.replace(",", "")
-    elif "," in cleaned:
-        # Solo comas: podría ser 1,234 (miles) o 1,50 (decimal europeo)
-        parts = cleaned.split(",")
-        if len(parts[-1]) == 3:
-            # Separador de miles: 1,234 o 500,000
-            cleaned = cleaned.replace(",", "")
-        else:
-            # Separador decimal europeo: 1,50
-            cleaned = cleaned.replace(",", ".")
-
-    try:
-        return float(cleaned)
-    except ValueError:
-        logger.warning("No se pudo parsear precio: '%s' → '%s'", price_str, cleaned)
-        return None
-
-
-def _parse_stops(stops_str: str | int | None) -> int:
-    """Parse stops from fast-flights to int.
-
-    fast-flights puede devolver "Nonstop", "1 stop", "2 stops", o un int.
-    """
-    if stops_str is None:
-        return 0
-    if isinstance(stops_str, int):
-        return stops_str
-
-    stops_lower = str(stops_str).lower()
-    if "nonstop" in stops_lower or "direct" in stops_lower:
-        return 0
-
-    # Buscar número en el string
-    match = re.search(r"(\d+)", str(stops_str))
-    return int(match.group(1)) if match else 0
-
-
-def _detect_currency(price_str: str | None) -> str:
-    """Detect currency from price string.
-
-    Intenta detectar la moneda del precio según el símbolo o prefijo.
-    Por defecto asume USD para rutas internacionales desde Argentina.
-    """
-    if not price_str:
-        return "USD"
-
-    price_upper = str(price_str).upper()
-    if "ARS" in price_upper or "AR$" in price_upper:
-        return "ARS"
-    if "€" in price_upper or "EUR" in price_upper:
-        return "EUR"
-    # USD es el default para Google Flights en rutas internacionales
-    return "USD"
+    flights_data: list[dict] = []
+    for f in result:
+        flights_data.append({
+            "name": ", ".join(f.airlines) if f.airlines else None,
+            "price": f.price,
+            "stops": max(len(f.flights) - 1, 0),
+        })
+    return flights_data
 
 
 def _fetch_in_subprocess(
@@ -117,7 +54,6 @@ def _fetch_in_subprocess(
     scan_date_iso: str,
     return_date_iso: str | None,
     trip: str,
-    fetch_mode: str,
     result_queue: multiprocessing.Queue,
 ) -> None:
     """Run get_flights in a separate process.
@@ -126,42 +62,47 @@ def _fetch_in_subprocess(
     Los threads de Python no se pueden matar, pero los procesos sí.
     """
     try:
-        from fast_flights import FlightData, Passengers, get_flights
+        from fast_flights import (
+            FlightQuery,
+            FlightsNotFound,
+            Passengers,
+            create_query,
+            get_flights,
+        )
 
-        flight_data_list = [
-            FlightData(
+        flight_queries = [
+            FlightQuery(
                 date=scan_date_iso,
                 from_airport=origin,
                 to_airport=destination,
             ),
         ]
         if return_date_iso:
-            flight_data_list.append(
-                FlightData(
+            flight_queries.append(
+                FlightQuery(
                     date=return_date_iso,
                     from_airport=destination,
                     to_airport=origin,
                 ),
             )
 
-        result = get_flights(
-            flight_data=flight_data_list,
+        query = create_query(
+            flights=flight_queries,
             trip=trip,
             seat="economy",
             passengers=Passengers(adults=1),
-            fetch_mode=fetch_mode,
+            language="en",
+            currency=REQUEST_CURRENCY,
         )
 
-        # Serializar resultados porque no podemos pasar objetos complejos entre procesos
-        flights_data = []
-        if result and result.flights:
-            for f in result.flights:
-                flights_data.append({
-                    "name": str(f.name) if f.name else None,
-                    "price": str(f.price) if f.price else None,
-                    "stops": str(f.stops) if f.stops is not None else None,
-                })
-        result_queue.put(("ok", flights_data))
+        try:
+            result = get_flights(query)
+        except FlightsNotFound:
+            # Google no tiene vuelos para esta fecha: lista vacía, no error
+            result_queue.put(("ok", []))
+            return
+
+        result_queue.put(("ok", _serialize_flights(result)))
     except Exception as e:
         result_queue.put(("error", str(e)))
 
@@ -206,7 +147,6 @@ class GoogleFlightsAdapter(BaseAdapter):
                 scan_date.isoformat(),
                 return_date_iso,
                 trip,
-                FETCH_MODE,
                 result_queue,
             ),
         )
@@ -367,13 +307,11 @@ class GoogleFlightsAdapter(BaseAdapter):
                 else:
                     self._consecutive_failures = 0
 
-                # Parsear cada vuelo encontrado
+                # Convertir cada vuelo encontrado a PriceResult
                 for flight in flights_data:
-                    price = _parse_price(flight.get("price"))
-                    if price is None:
+                    price = flight.get("price")
+                    if not price or price <= 0:
                         continue
-
-                    currency = _detect_currency(flight.get("price"))
 
                     # Formatear fecha con duración del viaje
                     date_display = scan_date.isoformat()
@@ -388,9 +326,9 @@ class GoogleFlightsAdapter(BaseAdapter):
                             origin=route.origin,
                             destination=route.destination,
                             date=date_display,
-                            price=price,
-                            currency=currency,
-                            stops=_parse_stops(flight.get("stops")),
+                            price=float(price),
+                            currency=REQUEST_CURRENCY,
+                            stops=flight.get("stops", 0),
                         )
                     )
 

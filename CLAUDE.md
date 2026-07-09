@@ -51,7 +51,7 @@ pytest tests/test_checker.py::test_cross_currency_usd_to_ars -v  # Single test
 1. Create `src/adapters/<airline>.py` implementing `BaseAdapter` from `src/adapters/base.py`
 2. Implement `async fetch_prices(route: RouteConfig) -> list[PriceResult]`
 3. Register the adapter in `src/engine.py` (see existing adapter initialization)
-4. Add the source name to routes in `config/routes.json`
+4. Add the source name to routes in `config/routes-recife.json` (or the active config)
 
 ## Configuration
-Routes and thresholds are in `config/routes.json`. The `manual_usd_to_ars` setting controls cross-currency threshold comparison. Alert state is persisted in `data/alert_state.json` (auto-generated, cached by GitHub Actions).
+Routes and thresholds are in `config/routes-recife.json` (active, used by the cron workflow) and `config/routes-norte.json` (dormant). The `manual_usd_to_ars` setting controls cross-currency threshold comparison; note that since fast-flights 3.x the Google Flights adapter requests prices directly in USD, so thresholds compare without conversion. Alert state is persisted in `data/alert_state.json` (auto-generated, gitignored, cached by GitHub Actions).

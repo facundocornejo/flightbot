@@ -8,9 +8,6 @@ Es el "cerebro" del bot.
 import asyncio
 import logging
 
-# Límite de rutas procesadas en paralelo (evita rate-limiting de Google)
-MAX_CONCURRENT_ROUTES = 2
-
 from src.adapters import GoogleFlightsAdapter, LevelAdapter, SkyAdapter
 from src.adapters.base import BaseAdapter
 from src.checker import check_prices
@@ -21,6 +18,9 @@ from src.state import AlertStateManager
 
 logger = logging.getLogger(__name__)
 
+# Límite de rutas procesadas en paralelo (evita rate-limiting de Google)
+MAX_CONCURRENT_ROUTES = 2
+
 
 async def run(
     routes: list[RouteConfig],
@@ -28,8 +28,14 @@ async def run(
     telegram_token: str | None = None,
     telegram_chat_id: str | None = None,
     dry_run: bool = False,
-) -> None:
+) -> int:
     """Execute the full price checking pipeline.
+
+    Returns:
+        Total de precios recolectados. 0 indica una corrida vacía: o bien el
+        scraper está roto (como el mes mudo por el breaking change de
+        fast-flights 3.0) o Google bloqueó la IP. El caller debe tratarlo
+        como falla, no como éxito.
 
     Flujo completo:
     1. Inicializar adapters y state manager
@@ -97,6 +103,22 @@ async def run(
 
     logger.info("Total de precios recolectados: %d", len(all_results))
 
+    # === Paso 1b: Corrida vacía = falla, nunca silencio ===
+    # 0 precios con rutas configuradas no es un resultado válido: avisar por
+    # Telegram para que la rotura del scraper no pase desapercibida semanas.
+    if routes and not all_results:
+        # Sin emojis: el print de dry-run revienta en consolas Windows cp1252
+        error_msg = (
+            "El bot terminó SIN recolectar ningún precio. "
+            "Probable rotura del scraper (fast-flights/Google) o bloqueo de IP. "
+            "Revisá los logs del workflow en GitHub Actions."
+        )
+        logger.error(error_msg)
+        if dry_run:
+            print(f"\n{error_msg}")
+        elif telegram_token and telegram_chat_id:
+            await send_error_alert(telegram_token, telegram_chat_id, error_msg)
+
     # === Paso 2: Filtrar por umbrales ===
     alerts = check_prices(all_results, routes, settings)
     logger.info("Alertas que pasaron el filtro de umbral: %d", len(alerts))
@@ -153,6 +175,8 @@ async def run(
         sent_count if not dry_run else 0,
         skipped_count,
     )
+
+    return len(all_results)
 
 
 def _is_price_drop(alert: PriceResult, state: AlertStateManager) -> bool:

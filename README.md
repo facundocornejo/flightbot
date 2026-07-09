@@ -139,7 +139,7 @@ cp .env.example .env
 # Edit .env with your Telegram token and chat ID
 ```
 
-Edit `config/routes.json` to set your routes, thresholds, and exchange rate.
+Edit `config/routes-recife.json` to set your routes, thresholds, and exchange rate.
 
 ### 4. Test Locally
 ```bash

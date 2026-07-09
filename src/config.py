@@ -15,8 +15,10 @@ logger = logging.getLogger(__name__)
 # Fuentes válidas que tienen adapter implementado
 VALID_SOURCES = {"level", "sky", "google_flights"}
 
-# Ruta al archivo de configuración (relativa a la raíz del proyecto)
-CONFIG_PATH = Path(__file__).parent.parent / "config" / "routes.json"
+# Ruta al archivo de configuración (relativa a la raíz del proyecto).
+# Default: la config del viaje activo (BA→Recife). config/routes.json no existe
+# desde el refocus del repo; los workflows pasan --config explícito igual.
+CONFIG_PATH = Path(__file__).parent.parent / "config" / "routes-recife.json"
 
 
 def load_config(config_path: Path | None = None) -> tuple[list[RouteConfig], AppSettings]:
@@ -40,7 +42,7 @@ def load_config(config_path: Path | None = None) -> tuple[list[RouteConfig], App
     if not path.exists():
         raise FileNotFoundError(
             f"Config file not found: {path}. "
-            f"Copiá config/routes.json.example a config/routes.json y editalo."
+            f"Configs disponibles en config/ (ej: routes-recife.json)."
         )
 
     with open(path, encoding="utf-8") as f:
