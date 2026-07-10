@@ -44,6 +44,9 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # Token de Travelpayouts/Aviasales (opcional: sin él la fuente se saltea)
+          TRAVELPAYOUTS_TOKEN: ${{ secrets.TRAVELPAYOUTS_TOKEN }}
+          TRAVELPAYOUTS_MARKET: ${{ vars.TRAVELPAYOUTS_MARKET }}
         run: timeout 3600 python -m src.main --config config/routes-recife.json
 
       - name: Commit alert history for dashboard

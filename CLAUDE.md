@@ -2,7 +2,14 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Estado actual (2026-07-09)
+## Estado actual (2026-07-10)
+
+- **Nueva 2ª fuente: Travelpayouts/Aviasales Data API** (`src/adapters/travelpayouts.py`,
+  portada del clon de Río): precios cacheados de búsquedas reales (48h), en modo RELAJADO
+  (`travelpayouts_match_trip_duration: false` — cualquier fecha de vuelta cuenta como señal
+  de tendencia). Verificada en vivo: 12 precios EZE/AEP→REC, mínimo AEP→REC USD 330 directo.
+  Requiere secret `TRAVELPAYOUTS_TOKEN` en GitHub (token por cuenta, compartido con el bot
+  de Río). Sin token la fuente se saltea con un log.
 
 - **Bot operativo post-incidente**: estuvo mudo 2026-06-10 → 2026-07-08 (fast-flights 3.0 rompió
   la API; los runs quedaban en verde con 0 precios). Fix en commit `122da20`: migración a la API

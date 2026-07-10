@@ -3,55 +3,109 @@
     {
       "origin": "EZE",
       "destination": "NAT",
-      "sources": ["google_flights"],
+      "sources": [
+        "google_flights",
+        "travelpayouts"
+      ],
       "threshold_usd": 550,
       "months_ahead": 9,
-      "active_months": [6, 7, 8, 9, 10],
+      "active_months": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
       "trip_type": "round_trip"
     },
     {
       "origin": "EZE",
       "destination": "FOR",
-      "sources": ["google_flights"],
+      "sources": [
+        "google_flights",
+        "travelpayouts"
+      ],
       "threshold_usd": 550,
       "months_ahead": 9,
-      "active_months": [6, 7, 8, 9, 10],
+      "active_months": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
       "trip_type": "round_trip"
     },
     {
       "origin": "AEP",
       "destination": "NAT",
-      "sources": ["google_flights"],
+      "sources": [
+        "google_flights",
+        "travelpayouts"
+      ],
       "threshold_usd": 550,
       "months_ahead": 9,
-      "active_months": [6, 7, 8, 9, 10],
+      "active_months": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
       "trip_type": "round_trip"
     },
     {
       "origin": "AEP",
       "destination": "FOR",
-      "sources": ["google_flights"],
+      "sources": [
+        "google_flights",
+        "travelpayouts"
+      ],
       "threshold_usd": 550,
       "months_ahead": 9,
-      "active_months": [6, 7, 8, 9, 10],
+      "active_months": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
       "trip_type": "round_trip"
     },
     {
       "origin": "ROS",
       "destination": "NAT",
-      "sources": ["google_flights"],
+      "sources": [
+        "google_flights",
+        "travelpayouts"
+      ],
       "threshold_usd": 550,
       "months_ahead": 9,
-      "active_months": [6, 7, 8, 9, 10],
+      "active_months": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
       "trip_type": "round_trip"
     },
     {
       "origin": "ROS",
       "destination": "FOR",
-      "sources": ["google_flights"],
+      "sources": [
+        "google_flights",
+        "travelpayouts"
+      ],
       "threshold_usd": 550,
       "months_ahead": 9,
-      "active_months": [6, 7, 8, 9, 10],
+      "active_months": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
       "trip_type": "round_trip"
     }
   ],
@@ -60,6 +114,7 @@
     "alert_cooldown_hours": 48,
     "manual_usd_to_ars": 1500.0,
     "trip_duration_min_days": 7,
-    "trip_duration_max_days": 10
+    "trip_duration_max_days": 10,
+    "travelpayouts_match_trip_duration": false
   }
 }

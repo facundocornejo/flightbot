@@ -13,7 +13,7 @@ from src.models import AppSettings, RouteConfig
 logger = logging.getLogger(__name__)
 
 # Fuentes válidas que tienen adapter implementado
-VALID_SOURCES = {"level", "sky", "google_flights"}
+VALID_SOURCES = {"level", "sky", "google_flights", "travelpayouts"}
 
 # Ruta al archivo de configuración (relativa a la raíz del proyecto).
 # Default: la config del viaje activo (BA→Recife). config/routes.json no existe
@@ -114,6 +114,9 @@ def _parse_routes(raw_routes: list[dict]) -> list[RouteConfig]:
             active_months=r.get("active_months", []),
             depart_from=r.get("depart_from"),
             depart_to=r.get("depart_to"),
+            scan_step_days=(
+                int(r["scan_step_days"]) if r.get("scan_step_days") is not None else None
+            ),
         )
         routes.append(route)
 
@@ -138,4 +141,7 @@ def _parse_settings(raw: dict) -> AppSettings:
         manual_usd_to_ars=float(raw.get("manual_usd_to_ars", 1200.0)),
         trip_duration_min_days=int(raw.get("trip_duration_min_days", 7)),
         trip_duration_max_days=int(raw.get("trip_duration_max_days", 10)),
+        travelpayouts_match_trip_duration=bool(
+            raw.get("travelpayouts_match_trip_duration", True)
+        ),
     )

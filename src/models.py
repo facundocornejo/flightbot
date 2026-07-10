@@ -62,6 +62,10 @@ class RouteConfig:
     # entre depart_from y depart_to. Útil para viajes con fecha acotada.
     depart_from: str | None = None
     depart_to: str | None = None
+    # Paso en días entre fechas de salida escaneadas. Si es None, usa el
+    # default del adapter (DAYS_BETWEEN_SCANS = 7). Para ventanas cortas
+    # (ej: ida flexible ±1 día) conviene 1 para no saltearse fechas.
+    scan_step_days: int | None = None
 
 
 @dataclass
@@ -117,3 +121,7 @@ class AppSettings:
     # Duración del viaje en días (para búsquedas round-trip)
     trip_duration_min_days: int = 7
     trip_duration_max_days: int = 10
+    # Si True (default), Travelpayouts descarta round-trips cacheados cuya
+    # duración no entre en [min, max] días. Si False, acepta cualquier vuelta
+    # (modo "señal de tendencia": la alerta muestra las fechas reales).
+    travelpayouts_match_trip_duration: bool = True

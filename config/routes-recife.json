@@ -3,7 +3,10 @@
     {
       "origin": "EZE",
       "destination": "REC",
-      "sources": ["google_flights"],
+      "sources": [
+        "google_flights",
+        "travelpayouts"
+      ],
       "threshold_usd": 550,
       "depart_from": "2026-08-01",
       "depart_to": "2026-10-31",
@@ -12,7 +15,10 @@
     {
       "origin": "AEP",
       "destination": "REC",
-      "sources": ["google_flights"],
+      "sources": [
+        "google_flights",
+        "travelpayouts"
+      ],
       "threshold_usd": 550,
       "depart_from": "2026-08-01",
       "depart_to": "2026-10-31",
@@ -24,6 +30,7 @@
     "alert_cooldown_hours": 48,
     "manual_usd_to_ars": 1500.0,
     "trip_duration_min_days": 8,
-    "trip_duration_max_days": 10
+    "trip_duration_max_days": 10,
+    "travelpayouts_match_trip_duration": false
   }
 }

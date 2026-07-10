@@ -14,12 +14,14 @@ import multiprocessing
 from datetime import date, timedelta
 
 from src.adapters.base import BaseAdapter
+from src.adapters.scan_dates import DEFAULT_DAYS_BETWEEN_SCANS, build_scan_dates
 from src.models import AppSettings, PriceResult, RouteConfig
 
 logger = logging.getLogger(__name__)
 
-# Escanear cada N días (compromiso entre cobertura y velocidad)
-DAYS_BETWEEN_SCANS = 7
+# Escanear cada N días (compromiso entre cobertura y velocidad).
+# Alias del default compartido en scan_dates.py (lo importan los tests).
+DAYS_BETWEEN_SCANS = DEFAULT_DAYS_BETWEEN_SCANS
 
 # Timeout por request en segundos (evita que se cuelgue indefinidamente)
 # Usa multiprocessing para poder matar el proceso de verdad
@@ -186,51 +188,8 @@ class GoogleFlightsAdapter(BaseAdapter):
 
     @staticmethod
     def _build_scan_dates(route: RouteConfig, today: date) -> list[date]:
-        """Build the list of departure dates to scan for a route.
-
-        Dos modos:
-        - Ventana explícita: si la ruta tiene depart_from/depart_to, escanea
-          día-por-día (cada DAYS_BETWEEN_SCANS) dentro de ese rango, recortando
-          al futuro (nunca antes de mañana).
-        - Clásico: months_ahead hacia adelante, filtrando por active_months.
-        """
-        dates: list[date] = []
-        start_floor = today + timedelta(days=1)  # Nunca escanear el pasado ni hoy
-
-        # === Modo ventana explícita ===
-        if route.depart_from or route.depart_to:
-            try:
-                win_start = (
-                    date.fromisoformat(route.depart_from)
-                    if route.depart_from
-                    else start_floor
-                )
-                win_end = (
-                    date.fromisoformat(route.depart_to)
-                    if route.depart_to
-                    else win_start + timedelta(days=route.months_ahead * 30)
-                )
-            except ValueError:
-                logger.warning(
-                    "Ventana de fechas inválida en %s→%s (depart_from=%s, depart_to=%s), "
-                    "usando modo clásico.",
-                    route.origin, route.destination, route.depart_from, route.depart_to,
-                )
-            else:
-                current = max(win_start, start_floor)
-                while current <= win_end:
-                    dates.append(current)
-                    current += timedelta(days=DAYS_BETWEEN_SCANS)
-                return dates
-
-        # === Modo clásico: months_ahead + active_months ===
-        total_days = route.months_ahead * 30
-        current = start_floor
-        while (current - today).days <= total_days:
-            if not route.active_months or current.month in route.active_months:
-                dates.append(current)
-            current += timedelta(days=DAYS_BETWEEN_SCANS)
-        return dates
+        """Build the list of departure dates to scan (delegado al helper compartido)."""
+        return build_scan_dates(route, today, DAYS_BETWEEN_SCANS)
 
     async def fetch_prices(self, route: RouteConfig) -> list[PriceResult]:
         """Fetch prices from Google Flights for specific dates.
