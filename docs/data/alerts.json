@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-25T11:32:52.904735+00:00",
+  "last_updated": "2026-09-25T21:21:12.020397+00:00",
   "alerts": [
     {
       "source": "google_flights",
@@ -38049,6 +38049,71 @@
       "currency": "USD",
       "stops": 1,
       "fetched_at": "2026-09-25T11:32:46.297056+00:00",
+      "route_key": "AEP-REC-2026-10-04 → 2026-10-12",
+      "is_price_drop": false
+    },
+    {
+      "source": "travelpayouts",
+      "airline": "LATAM",
+      "origin": "EZE",
+      "destination": "REC",
+      "date": "2026-10-04 → 2026-10-12",
+      "price": 522.0,
+      "currency": "USD",
+      "stops": 1,
+      "fetched_at": "2026-09-25T21:21:06.730162+00:00",
+      "route_key": "EZE-REC-2026-10-04 → 2026-10-12",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "LATAM",
+      "origin": "AEP",
+      "destination": "REC",
+      "date": "2026-09-26 → 2026-10-05",
+      "price": 528.0,
+      "currency": "USD",
+      "stops": 2,
+      "fetched_at": "2026-09-25T21:20:04.230000+00:00",
+      "route_key": "AEP-REC-2026-09-26 → 2026-10-05",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "LATAM",
+      "origin": "AEP",
+      "destination": "REC",
+      "date": "2026-10-10 → 2026-10-19",
+      "price": 524.0,
+      "currency": "USD",
+      "stops": 2,
+      "fetched_at": "2026-09-25T21:20:25.331726+00:00",
+      "route_key": "AEP-REC-2026-10-10 → 2026-10-19",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "LATAM",
+      "origin": "AEP",
+      "destination": "REC",
+      "date": "2026-10-10 → 2026-10-20",
+      "price": 466.0,
+      "currency": "USD",
+      "stops": 2,
+      "fetched_at": "2026-09-25T21:20:28.815566+00:00",
+      "route_key": "AEP-REC-2026-10-10 → 2026-10-20",
+      "is_price_drop": false
+    },
+    {
+      "source": "travelpayouts",
+      "airline": "GOL",
+      "origin": "AEP",
+      "destination": "REC",
+      "date": "2026-10-04 → 2026-10-12",
+      "price": 531.0,
+      "currency": "USD",
+      "stops": 1,
+      "fetched_at": "2026-09-25T21:21:06.781714+00:00",
       "route_key": "AEP-REC-2026-10-04 → 2026-10-12",
       "is_price_drop": false
     }
