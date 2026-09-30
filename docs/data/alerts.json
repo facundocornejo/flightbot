@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-29T22:05:38.592131+00:00",
+  "last_updated": "2026-09-30T12:15:04.288784+00:00",
   "alerts": [
     {
       "source": "google_flights",
@@ -38374,6 +38374,58 @@
       "currency": "USD",
       "stops": 1,
       "fetched_at": "2026-09-29T22:05:32.309433+00:00",
+      "route_key": "AEP-REC-2026-10-04 → 2026-10-12",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "LATAM",
+      "origin": "EZE",
+      "destination": "REC",
+      "date": "2026-10-29 → 2026-11-06",
+      "price": 519.0,
+      "currency": "USD",
+      "stops": 2,
+      "fetched_at": "2026-09-30T12:14:49.251380+00:00",
+      "route_key": "EZE-REC-2026-10-29 → 2026-11-06",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "LATAM",
+      "origin": "EZE",
+      "destination": "REC",
+      "date": "2026-10-29 → 2026-11-08",
+      "price": 531.0,
+      "currency": "USD",
+      "stops": 2,
+      "fetched_at": "2026-09-30T12:14:56.142104+00:00",
+      "route_key": "EZE-REC-2026-10-29 → 2026-11-08",
+      "is_price_drop": false
+    },
+    {
+      "source": "travelpayouts",
+      "airline": "LATAM",
+      "origin": "EZE",
+      "destination": "REC",
+      "date": "2026-10-04 → 2026-10-12",
+      "price": 522.0,
+      "currency": "USD",
+      "stops": 1,
+      "fetched_at": "2026-09-30T12:14:59.341336+00:00",
+      "route_key": "EZE-REC-2026-10-04 → 2026-10-12",
+      "is_price_drop": false
+    },
+    {
+      "source": "travelpayouts",
+      "airline": "GOL",
+      "origin": "AEP",
+      "destination": "REC",
+      "date": "2026-10-04 → 2026-10-12",
+      "price": 531.0,
+      "currency": "USD",
+      "stops": 1,
+      "fetched_at": "2026-09-30T12:14:59.180958+00:00",
       "route_key": "AEP-REC-2026-10-04 → 2026-10-12",
       "is_price_drop": false
     }
