@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-01T22:31:45.838782+00:00",
+  "last_updated": "2026-10-02T12:13:11.557894+00:00",
   "alerts": [
     {
       "source": "google_flights",
@@ -38530,6 +38530,84 @@
       "currency": "USD",
       "stops": 2,
       "fetched_at": "2026-10-01T22:31:40.919224+00:00",
+      "route_key": "AEP-REC-2026-10-04 → 2026-10-12",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "LATAM",
+      "origin": "EZE",
+      "destination": "REC",
+      "date": "2026-10-31 → 2026-11-08",
+      "price": 490.0,
+      "currency": "USD",
+      "stops": 2,
+      "fetched_at": "2026-10-02T12:12:54.817660+00:00",
+      "route_key": "EZE-REC-2026-10-31 → 2026-11-08",
+      "is_price_drop": false
+    },
+    {
+      "source": "travelpayouts",
+      "airline": "LATAM",
+      "origin": "EZE",
+      "destination": "REC",
+      "date": "2026-10-04 → 2026-10-12",
+      "price": 550.0,
+      "currency": "USD",
+      "stops": 1,
+      "fetched_at": "2026-10-02T12:13:05.208497+00:00",
+      "route_key": "EZE-REC-2026-10-04 → 2026-10-12",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "LATAM",
+      "origin": "AEP",
+      "destination": "REC",
+      "date": "2026-10-10 → 2026-10-18",
+      "price": 544.0,
+      "currency": "USD",
+      "stops": 2,
+      "fetched_at": "2026-10-02T12:12:23.655234+00:00",
+      "route_key": "AEP-REC-2026-10-10 → 2026-10-18",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "LATAM",
+      "origin": "AEP",
+      "destination": "REC",
+      "date": "2026-10-10 → 2026-10-20",
+      "price": 544.0,
+      "currency": "USD",
+      "stops": 2,
+      "fetched_at": "2026-10-02T12:12:30.775651+00:00",
+      "route_key": "AEP-REC-2026-10-10 → 2026-10-20",
+      "is_price_drop": false
+    },
+    {
+      "source": "google_flights",
+      "airline": "LATAM",
+      "origin": "AEP",
+      "destination": "REC",
+      "date": "2026-10-31 → 2026-11-10",
+      "price": 530.0,
+      "currency": "USD",
+      "stops": 2,
+      "fetched_at": "2026-10-02T12:13:01.742566+00:00",
+      "route_key": "AEP-REC-2026-10-31 → 2026-11-10",
+      "is_price_drop": false
+    },
+    {
+      "source": "travelpayouts",
+      "airline": "LATAM",
+      "origin": "AEP",
+      "destination": "REC",
+      "date": "2026-10-04 → 2026-10-12",
+      "price": 527.0,
+      "currency": "USD",
+      "stops": 2,
+      "fetched_at": "2026-10-02T12:13:04.896366+00:00",
       "route_key": "AEP-REC-2026-10-04 → 2026-10-12",
       "is_price_drop": false
     }
